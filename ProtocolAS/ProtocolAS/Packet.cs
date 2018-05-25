@@ -33,6 +33,9 @@ namespace ProtocolAS
         public byte[] newMessage { get; private set; }
         public int payloadvalue { get; private set; }
         public byte Length { get; private set; }
+        public byte ChecksumSum { get; private set; }
+        public byte ChecksumDivisor { get { return 0xE0; } }
+        public int Checksum { get; private set; }
 
         byte bitmask = 0xFF;
 
@@ -46,7 +49,7 @@ namespace ProtocolAS
         /// <param name="Payload">Payload - n × 16 bit, Arbitrary number of data bytes carried by the packet.This must be interpreted depending on the command. </param>
         /// <param name="Checksum">Checksum - 16 bits, Checksum of the complete packet computed using the Fletcher-16 algorithm.This is used to detect if the packet was corrupted.</param>
         /// <returns>het gehele bericht</returns>
-        public byte[] Serialize(byte Command, byte[] Payload, byte Checksum1, byte Checksum2)
+        public byte[] Serialize(byte Command, byte[] Payload)
         {
             if(Payload == null)
             {
@@ -72,18 +75,34 @@ namespace ProtocolAS
                 }
             }
 
-            int check1 = bitmask & (Checksum1); //1e deel checksum
-            int check2 = bitmask & (Checksum2); //2e deel checksum
-
             //maakt het bericht vanaf hier
             newMessage[0] = magic1;
             newMessage[1] = magic2;
             newMessage[2] = Length;
             newMessage[3] = Command;
             
+            Checksum = Fletcher16(newMessage, (UInt16)(Length - 2));
+            int check1 = (byte)Checksum;
+            int check2 = (byte)Checksum<<8;
+
             newMessage[Length - 2] = (byte)check1;
             newMessage[Length - 1] = (byte)check2;
             return newMessage; //verstuurt message, message is klaar
+        }
+
+        public UInt16 Fletcher16(byte[] data, UInt16 count)
+        {
+            UInt16 sum1 = 0;
+            UInt16 sum2 = 0;
+            int index;
+
+            for (index = 0; index < count; ++index)
+            {
+                sum1 = (UInt16)((sum1 + data[index]) % 255);
+                sum2 = (UInt16)((sum2 + sum1) % 255);
+            }
+
+            return (UInt16)((sum2 << 8) | sum1);
         }
     }
 }
