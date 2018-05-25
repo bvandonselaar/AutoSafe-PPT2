@@ -23,12 +23,12 @@ namespace PTT2CarGps
                     LocationTime pos1 = GetPositions[GetPositions.Count - 2];
                     LocationTime pos2 = GetPositions[GetPositions.Count - 1];
                     TimeSpan timeDifference = pos2.Time.Subtract(pos1.Time);
-                    if ((int)timeDifference.Seconds != 0)
+                    if (1 != 0)
                     {
                         Point SpeedVector = new Point
                         {
-                            X = (pos2.Location.X - pos1.Location.X) / timeDifference.Seconds,
-                            Y = (pos2.Location.Y - pos1.Location.Y) / timeDifference.Seconds
+                            X = (pos2.Location.X - pos1.Location.X),
+                            Y = (pos2.Location.Y - pos1.Location.Y)
                         };
                         return SpeedVector;
                     }
