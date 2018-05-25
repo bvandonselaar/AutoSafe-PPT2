@@ -21,8 +21,7 @@ namespace PTT2CarGps
             InitializeComponent();
             Cars = new List<Car>();
             comPortCBB.DataSource = SerialPort.GetPortNames();
-            readSerialTimer.Start();
-            AddCars();
+            SerialTimer.Start();
         }
         private void AddCars()
         {
@@ -37,6 +36,7 @@ namespace PTT2CarGps
         }
         private void TestTrailDrawing()
         {
+            if (Cars.Count == 0) AddCars();
             Random r = new Random();
             int[] signatures = new int[Cars.Count];
             Point[] points = new Point[Cars.Count];
@@ -45,8 +45,8 @@ namespace PTT2CarGps
                 signatures[i] = i;
                 Point p = new Point
                 {
-                    X = Cars[i].Path.Position.X + r.Next(0, 21) - 10,
-                    Y = Cars[i].Path.Position.Y + r.Next(0, 21) - 10
+                    X = Cars[i].Path.Position.X + Cars[i].Path.Speed.X + r.Next(0, 5) - 2,
+                    Y = Cars[i].Path.Position.Y + Cars[i].Path.Speed.Y + r.Next(0, 5) - 2
                 };
                 points[i] = p;
             }
@@ -69,6 +69,7 @@ namespace PTT2CarGps
                     port = new SerialPort(comPortCBB.Text, Convert.ToInt32(baudRateCBB.Text), Parity.None, 8, StopBits.One);
                     port.Open();
                     port.ReadTimeout = 1000;
+                    toolStripStatusLabel1.Text = "Connected";
                 }
                 catch (FormatException ex)
                 {
@@ -98,14 +99,16 @@ namespace PTT2CarGps
                 return;
             }
 
-            while(port.BytesToRead > 0)
+            port.Write("send data");
+
+            while(port.IsOpen && port.BytesToRead > 0)
             {
+                toolStripStatusLabel1.Text = "Incomming data...";
                 char[] data;
                 try
                 {
-                    data = port.ReadLine().ToCharArray();
+                    data = port.ReadExisting().ToCharArray();
                     SerialComLB.Items.Add(new String(data));
-                    toolStripStatusLabel1.Text = "Connected";
                 }
                 catch (TimeoutException)
                 {
@@ -114,7 +117,17 @@ namespace PTT2CarGps
                 }
             }
 
-            while(SerialComLB.Items.Count > 8)
+            if (!port.IsOpen)
+            {
+                toolStripStatusLabel1.Text = "Not connected";
+            }
+            else
+            {
+                toolStripStatusLabel1.Text = "Connected";
+            }
+
+
+            while (SerialComLB.Items.Count > 35)
             {
                 SerialComLB.Items.RemoveAt(0);
             }
@@ -151,6 +164,33 @@ namespace PTT2CarGps
             }
 
             DrawPositions();
+            UpdateUiData();
+        }
+
+        private void UpdateUiData()
+        {
+            foreach(Car c in Cars)
+            {
+                if (!CarsLB.Items.Contains(c))
+                {
+                    CarsLB.Items.Add(c);
+                }
+            }
+            List<Car> CarsToRemove = new List<Car>();
+            foreach(object o in CarsLB.Items)
+            {
+                if(o is Car)
+                {
+                    if(!Cars.Contains(o as Car))
+                    {
+                        CarsToRemove.Add(o as Car);
+                    }
+                }
+            }
+            foreach(Car c in CarsToRemove)
+            {
+                CarsLB.Items.Remove(c);
+            }
         }
 
         private void DrawPositions()
@@ -194,6 +234,17 @@ namespace PTT2CarGps
         private void button1_Click(object sender, EventArgs e)
         {
             TestTrailDrawing();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Cars.Clear();
+        }
+
+        private void CarsLB_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Car selectedCar = (Car)CarsLB.SelectedItem;
+            CarInfoLBL.Text = selectedCar.ToString();
         }
     }
 }
