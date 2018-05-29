@@ -6,7 +6,18 @@ using System.Threading.Tasks;
 
 namespace ProtocolAS
 {
-    class SendNullException
+    public class SendNullException : Exception
     {
+        public SendNullException()
+        {
+        }
+
+        public SendNullException(string message) : base(message)
+        {
+        }
+
+        public SendNullException(string message, Exception inner) : base(message, inner)
+        {
+        }
     }
 }
