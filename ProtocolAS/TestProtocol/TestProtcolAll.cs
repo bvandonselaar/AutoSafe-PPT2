@@ -60,6 +60,24 @@ namespace TestProtocol
             Assert.AreEqual(0xC8, test[4]);
             Assert.AreEqual(0xD6, test[5]);
         }
+        /*[TestMethod]
+         * Deze test kan niet werken omdat je geen null mag meegeven en dan een error krijgt
+        public void TestSerializeCommandNull()
+        {
+            //Test versturen bericht zonder payload
+            byte Command = null;
+            byte[] Message = new byte[] { 0x0E, 0xE0, 0x06, 0XE1 };
+            byte[] test = p.Serialize(Command, Message);
+            byte[] newMessage = new byte[] { };
+
+            Assert.AreEqual(Message[0], test[0]);
+            Assert.AreEqual(Message[1], test[1]);
+            Assert.AreEqual(Message[2], test.Length);
+            Assert.AreEqual(Message[2], test[2]);
+            Assert.AreEqual(Message[3], test[3]);
+            Assert.AreEqual(0xC8, test[4]);
+            Assert.AreEqual(0xD6, test[5]);
+        }*/
 
         [TestMethod]
         public void TestDeserializeCorrect()

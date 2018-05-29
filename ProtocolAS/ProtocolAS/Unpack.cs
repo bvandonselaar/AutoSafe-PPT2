@@ -60,19 +60,23 @@ namespace ProtocolAS
                 //Als de Fletcher16 en de zelf geschoven Checksum hetzelfde zijn, dan is het bericht goed en mag het worden ontcijferd
                 if (ControlChecksum == Checksum)
                 {
-                    Cat = (byte)(0b11100000 & (message[3])); //zet categorie
-                    Cmd = (byte)(0b00011111 & (message[3])); //zet bericht
-
-                    if (Length > 0x06)
+                    if(message[3] != null)
                     {
-                        //maakt payloadarray aan
-                        Payload = new byte[100];
-                        for (int i = 4; i < Length; i++)
+                        Cat = (byte)(0b11100000 & (message[3])); //zet categorie
+                        Cmd = (byte)(0b00011111 & (message[3])); //zet bericht
+
+                        if (Length > 0x06)
                         {
-                            Payload[i - 4] = message[i];
+                            //maakt payloadarray aan
+                            Payload = new byte[100];
+                            for (int i = 4; i < Length; i++)
+                            {
+                                Payload[i - 4] = message[i];
+                            }
                         }
+                        return 1;
                     }
-                    return 1;
+                    return -2;
                 }
                 //Als Fletcher16 en Checksum niet gelijk zijn, mag het bericht niet worden gemaakt, vraagt om nieuw bericht
                 else return -1;

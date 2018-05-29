@@ -48,8 +48,15 @@ namespace ProtocolAS
         /// <returns>het gehele bericht</returns>
         public byte[] Serialize(byte Command, byte[] Payload)
         {
+            SendNullException NullError = new SendNullException("Tried to send a null");
+
+            //if command is not null dan mag hij de message maken
+            if (Command == null)
+            {
+               throw new SendNullException();
+            }
             //De lengte van het bericht is 6 wanneer hij geen payload heeft, anders 6 + de lengte van de payload
-            if(Payload == null)
+            if (Payload == null)
             {
                 Length = 6;
             }
@@ -81,14 +88,17 @@ namespace ProtocolAS
             }
             //Doet controleren of de waarden kloppen
             Checksum = Fletcher16(newMessage);
-            int check1 = (byte)((Checksum >>8)& 0xFF); 
+            int check1 = (byte)((Checksum >> 8) & 0xFF);
             int check2 = (byte)Checksum & 0XFF;
 
             newMessage[Length - 2] = (byte)check1; //eerste deel checksum in array
             newMessage[Length - 1] = (byte)check2; //tweede deel checksum in array
 
             return newMessage; //verstuurt message, message is klaar
+
+
         }
+
         /// <summary>
         /// Het Checksum-gedeelte volgens het Fletcher16-protocol. 
         /// Je pakt voor sum1 steeds de waarde van de data op arraylocatie i, waarna je de rest pakt als je dit deelt door 255
@@ -102,7 +112,7 @@ namespace ProtocolAS
             UInt16 sum1 = 0;
             UInt16 sum2 = 0;
 
-            for(int i = 0; i < data.Length - 2; i++)
+            for (int i = 0; i < data.Length - 2; i++)
             {
                 sum1 = (UInt16)((sum1 + data[i]) % 255);
                 sum2 = (UInt16)((sum2 + sum1) % 255);
