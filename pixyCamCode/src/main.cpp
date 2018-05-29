@@ -6,8 +6,6 @@
 
 Pixy pixy;
 
-unsigned long lastPrintMillis = 0;
-
 typedef struct{
   uint8_t signatureID;
   //arrays to calculate moving average
@@ -63,6 +61,18 @@ void processData(Pixy* pixyCam, int count){
   }
 }
 
+void printPacket(struct packet* packet){
+  Serial.println("magic: " + (String)packet->magic);
+  Serial.println("lenght: " + (String)packet->length);
+  Serial.println("category: " + (String)packet->category);
+  Serial.println("command: " + (String)packet->command);
+  for(int i = 0; i < packet->length - 6; i++){
+    Serial.println("payload: " + (String)packet->payload[i]);
+  }
+  Serial.println("checksum: " + (String)packet->checksum);
+  Serial.println("---------------");
+}
+
 //Sends the position data according to the protocol
 void sendPositionProtocol(SignatureData* data, int count){
   //data [signature] 1 byte [X] 2 bytes [Y] 2 bytes
@@ -104,6 +114,10 @@ void sendPositionProtocol(SignatureData* data, int count){
     //send data
     for(unsigned int i = 0; i < size; i++){
       Serial.write((&serialData)[i]);
+    }
+    struct packet deserializedPacket;
+    if(packet_deserialize(&deserializedPacket, &serialData, size) == 0){
+      //printPacket(&deserializedPacket);
     }
   }
 }
@@ -157,8 +171,10 @@ void loop()
 {
     int count = pixy.getBlocks();
     processData(&pixy, count);
-    if(lastPrintMillis < millis() - 1000){
-      lastPrintMillis = millis();
+    if(Serial.available()){
+      while(Serial.available()){
+        Serial.read();
+      }
       sendPositionProtocol(allSignatureData, 7);
     }
 }

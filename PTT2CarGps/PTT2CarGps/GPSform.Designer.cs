@@ -37,11 +37,14 @@
             this.refreshComPortBTTN = new System.Windows.Forms.Button();
             this.comPortCBB = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.readSerialTimer = new System.Windows.Forms.Timer(this.components);
+            this.SerialTimer = new System.Windows.Forms.Timer(this.components);
             this.CarLocationsPB = new System.Windows.Forms.PictureBox();
             this.infoSS = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.CarsLB = new System.Windows.Forms.ListBox();
+            this.CarInfoLBL = new System.Windows.Forms.Label();
             this.settingsGB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CarLocationsPB)).BeginInit();
             this.infoSS.SuspendLayout();
@@ -68,7 +71,7 @@
             this.SerialComLB.FormattingEnabled = true;
             this.SerialComLB.Location = new System.Drawing.Point(6, 130);
             this.SerialComLB.Name = "SerialComLB";
-            this.SerialComLB.Size = new System.Drawing.Size(199, 134);
+            this.SerialComLB.Size = new System.Drawing.Size(199, 446);
             this.SerialComLB.TabIndex = 6;
             // 
             // ConnectBTTN
@@ -140,10 +143,10 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "COM port:";
             // 
-            // readSerialTimer
+            // SerialTimer
             // 
-            this.readSerialTimer.Interval = 10;
-            this.readSerialTimer.Tick += new System.EventHandler(this.ReadSerialTimer_Tick);
+            this.SerialTimer.Interval = 1000;
+            this.SerialTimer.Tick += new System.EventHandler(this.ReadSerialTimer_Tick);
             // 
             // CarLocationsPB
             // 
@@ -181,11 +184,42 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(713, 418);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 4;
+            this.button2.Text = "Clear";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // CarsLB
+            // 
+            this.CarsLB.FormattingEnabled = true;
+            this.CarsLB.Location = new System.Drawing.Point(229, 418);
+            this.CarsLB.Name = "CarsLB";
+            this.CarsLB.Size = new System.Drawing.Size(172, 160);
+            this.CarsLB.TabIndex = 5;
+            this.CarsLB.SelectedIndexChanged += new System.EventHandler(this.CarsLB_SelectedIndexChanged);
+            // 
+            // CarInfoLBL
+            // 
+            this.CarInfoLBL.AutoSize = true;
+            this.CarInfoLBL.Location = new System.Drawing.Point(408, 427);
+            this.CarInfoLBL.Name = "CarInfoLBL";
+            this.CarInfoLBL.Size = new System.Drawing.Size(42, 13);
+            this.CarInfoLBL.TabIndex = 6;
+            this.CarInfoLBL.Text = "car info";
+            // 
             // GPSform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(883, 613);
+            this.Controls.Add(this.CarInfoLBL);
+            this.Controls.Add(this.CarsLB);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.infoSS);
             this.Controls.Add(this.CarLocationsPB);
@@ -210,13 +244,16 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox baudRateCBB;
-        private System.Windows.Forms.Timer readSerialTimer;
+        private System.Windows.Forms.Timer SerialTimer;
         private System.Windows.Forms.PictureBox CarLocationsPB;
         private System.Windows.Forms.StatusStrip infoSS;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.Button ConnectBTTN;
         private System.Windows.Forms.ListBox SerialComLB;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ListBox CarsLB;
+        private System.Windows.Forms.Label CarInfoLBL;
     }
 }
 

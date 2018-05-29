@@ -28,14 +28,11 @@ namespace ProtocolAS
      */
     public class Packet
     {
-        public byte magic1 { get { return 0x0E; } }
-        public byte magic2 { get { return 0xE0; } }
+        public byte Magic1 { get { return 0x0E; } }
+        public byte Magic2 { get { return 0xE0; } }
         public byte[] newMessage { get; private set; }
-        public int payloadvalue { get; private set; }
         public byte Length { get; private set; }
-        public byte ChecksumSum { get; private set; }
-        public byte ChecksumDivisor { get { return 0xE0; } }
-        public int Checksum { get; private set; }
+        public UInt16 Checksum { get; private set; }
 
         byte bitmask = 0xFF;
 
@@ -51,7 +48,15 @@ namespace ProtocolAS
         /// <returns>het gehele bericht</returns>
         public byte[] Serialize(byte Command, byte[] Payload)
         {
-            if(Payload == null)
+            SendNullException NullError = new SendNullException("Tried to send a null");
+
+            //if command is not null dan mag hij de message maken
+            if (Command == null)
+            {
+               throw new SendNullException();
+            }
+            //De lengte van het bericht is 6 wanneer hij geen payload heeft, anders 6 + de lengte van de payload
+            if (Payload == null)
             {
                 Length = 6;
             }
@@ -67,41 +72,51 @@ namespace ProtocolAS
                 newMessage[i] = 0x00;
             }
 
+            //maakt het bericht vanaf hier
+            newMessage[0] = Magic1;
+            newMessage[1] = Magic2;
+            newMessage[2] = Length;
+            newMessage[3] = Command;
+
+            //Als de payload niet null is, dan splitst hij hier de Payload in losse bytes en zet het in het nieuwe bericht
             if (Payload != null)
             {
-                for (int i = 0; i < Payload.Length; i++)//splitst Payload in losse bytes
+                for (int i = 0; i < Payload.Length; i++)
                 {
                     newMessage[i + 4] = (byte)(bitmask & (Payload[i]));
                 }
             }
+            //Doet controleren of de waarden kloppen
+            Checksum = Fletcher16(newMessage);
+            int check1 = (byte)((Checksum >> 8) & 0xFF);
+            int check2 = (byte)Checksum & 0XFF;
 
-            //maakt het bericht vanaf hier
-            newMessage[0] = magic1;
-            newMessage[1] = magic2;
-            newMessage[2] = Length;
-            newMessage[3] = Command;
-            
-            Checksum = Fletcher16(newMessage, (UInt16)(Length - 2));
-            int check1 = (byte)Checksum;
-            int check2 = (byte)Checksum<<8;
+            newMessage[Length - 2] = (byte)check1; //eerste deel checksum in array
+            newMessage[Length - 1] = (byte)check2; //tweede deel checksum in array
 
-            newMessage[Length - 2] = (byte)check1;
-            newMessage[Length - 1] = (byte)check2;
             return newMessage; //verstuurt message, message is klaar
+
+
         }
 
-        public UInt16 Fletcher16(byte[] data, UInt16 count)
+        /// <summary>
+        /// Het Checksum-gedeelte volgens het Fletcher16-protocol. 
+        /// Je pakt voor sum1 steeds de waarde van de data op arraylocatie i, waarna je de rest pakt als je dit deelt door 255
+        /// Op sum 2 tel je de huidige Sum2 waarde op bij de sum1 waarde die je net hebt berekend en ook deze deel je dan door 255
+        /// Sum2 moet het eerste komen in de waarde en sum 1 als tweede
+        /// </summary>
+        /// <param name="data">Het meegekregen bericht dat een checksum zal krijgen</param>
+        /// <returns></returns>
+        public UInt16 Fletcher16(byte[] data)
         {
             UInt16 sum1 = 0;
             UInt16 sum2 = 0;
-            int index;
 
-            for (index = 0; index < count; ++index)
+            for (int i = 0; i < data.Length - 2; i++)
             {
-                sum1 = (UInt16)((sum1 + data[index]) % 255);
+                sum1 = (UInt16)((sum1 + data[i]) % 255);
                 sum2 = (UInt16)((sum2 + sum1) % 255);
             }
-
             return (UInt16)((sum2 << 8) | sum1);
         }
     }
