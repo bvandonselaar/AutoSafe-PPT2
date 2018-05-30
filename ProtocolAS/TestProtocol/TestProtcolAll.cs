@@ -100,6 +100,17 @@ namespace TestProtocol
         }
 
         [TestMethod]
+        public void TestDeserializeIncorrectLength()
+        {
+            //Test het ontcijferen van een ontvangen bericht waarvan de lengte niet overeenkomt met de meegegeven lengte op index 2
+            byte[] Message = new byte[] { 0x0E, 0xE0, 100, 0XE1, 0xA1, 0xA2, 0x33, 0x44, 0x55, 0x96 };
+            int check = u.Deserialize(Message);
+
+            Assert.AreEqual(-1, check);
+            Assert.AreNotEqual(Message[2], Message.Length);
+        }
+
+        [TestMethod]
         public void TestDeserializeIncorrectMagic()
         {
             //Test het ontcijferen van een ontvangen bericht die alles heeft maar de Magic niet correct heeft
