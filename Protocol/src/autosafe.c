@@ -4,16 +4,15 @@
  * Copyright (c) 2018, AutoSafe, Inc.
  */
 
-#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "protocol.h"
+#include "autosafe.h"
 
 int packet_serialize(struct packet* packet, uint8_t* data, size_t* size)
 {
-    if (packet == NULL) {
+    if (packet == NULL || packet->payload == NULL || data == NULL) {
         return -1;
     }
 
@@ -35,10 +34,6 @@ int packet_serialize(struct packet* packet, uint8_t* data, size_t* size)
         i += packet->length - PACKET_FIXED;
     }
 
-    // Checksum
-    data[i++] = packet->checksum >> 8;
-    data[i++] = packet->checksum & 0xFF;
-
     *size = i;
 
     return 0;
@@ -47,6 +42,10 @@ int packet_serialize(struct packet* packet, uint8_t* data, size_t* size)
 int packet_deserialize(struct packet* packet, const uint8_t* data, const size_t size)
 {
     if (packet == NULL || data == NULL) {
+        return -1;
+    }
+
+    if (size < PACKET_FIXED) {
         return -1;
     }
 
@@ -59,23 +58,26 @@ int packet_deserialize(struct packet* packet, const uint8_t* data, const size_t 
     // Length
     packet->length = data[i++];
 
-    // Payload
-    packet->payload = malloc(packet->length - PACKET_FIXED);
+    if (packet->length != size) {
+        return -1;
+    }
 
     // Category + command
     packet->category = data[i] >> 5;
     packet->command = data[i++] & 0b00011111;
 
     // Payload
+    packet->payload = malloc(packet->length - PACKET_FIXED);
+
     if (packet->payload == NULL) {
         return -1;
     }
 
     memcpy(packet->payload, &data[i], packet->length - PACKET_FIXED);
+    i += packet->length - PACKET_FIXED;
 
     // Checksum
     packet->checksum = data[i] << 8 | data[i + 1];
-    i += 2;
 
     return 0;
 }
