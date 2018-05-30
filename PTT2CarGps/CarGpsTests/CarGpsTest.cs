@@ -9,7 +9,7 @@ namespace CarGpsTests
     [TestClass]
     public class CarGpsTests
     {
-        [TestMethod]
+        /*[TestMethod]
         public void TestPositionAdding()
         {
             GPSform form = new GPSform();
@@ -40,6 +40,6 @@ namespace CarGpsTests
             Assert.AreEqual(4, form.signatureTrails.Count);
             //Test if new trail value got saved in array
             Assert.AreEqual(positions3[3], form.signatureTrails[3][0]);
-        }
+        }*/
     }
 }

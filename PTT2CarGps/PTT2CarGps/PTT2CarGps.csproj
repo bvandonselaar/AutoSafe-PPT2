@@ -53,9 +53,11 @@
       <DependentUpon>GPSform.cs</DependentUpon>
     </Compile>
     <Compile Include="LocationTime.cs" />
+    <Compile Include="Packet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Trail.cs" />
+    <Compile Include="Unpack.cs" />
     <Compile Include="Warning.cs" />
     <EmbeddedResource Include="GPSform.resx">
       <DependentUpon>GPSform.cs</DependentUpon>

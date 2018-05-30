@@ -45,6 +45,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.CarsLB = new System.Windows.Forms.ListBox();
             this.CarInfoLBL = new System.Windows.Forms.Label();
+            this.closeConnectionBTTN = new System.Windows.Forms.Button();
             this.settingsGB.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CarLocationsPB)).BeginInit();
             this.infoSS.SuspendLayout();
@@ -52,6 +53,7 @@
             // 
             // settingsGB
             // 
+            this.settingsGB.Controls.Add(this.closeConnectionBTTN);
             this.settingsGB.Controls.Add(this.SerialComLB);
             this.settingsGB.Controls.Add(this.ConnectBTTN);
             this.settingsGB.Controls.Add(this.label2);
@@ -71,7 +73,7 @@
             this.SerialComLB.FormattingEnabled = true;
             this.SerialComLB.Location = new System.Drawing.Point(6, 130);
             this.SerialComLB.Name = "SerialComLB";
-            this.SerialComLB.Size = new System.Drawing.Size(199, 446);
+            this.SerialComLB.Size = new System.Drawing.Size(199, 420);
             this.SerialComLB.TabIndex = 6;
             // 
             // ConnectBTTN
@@ -145,7 +147,7 @@
             // 
             // SerialTimer
             // 
-            this.SerialTimer.Interval = 1000;
+            this.SerialTimer.Interval = 10;
             this.SerialTimer.Tick += new System.EventHandler(this.ReadSerialTimer_Tick);
             // 
             // CarLocationsPB
@@ -212,6 +214,16 @@
             this.CarInfoLBL.TabIndex = 6;
             this.CarInfoLBL.Text = "car info";
             // 
+            // closeConnectionBTTN
+            // 
+            this.closeConnectionBTTN.Location = new System.Drawing.Point(106, 553);
+            this.closeConnectionBTTN.Name = "closeConnectionBTTN";
+            this.closeConnectionBTTN.Size = new System.Drawing.Size(99, 23);
+            this.closeConnectionBTTN.TabIndex = 7;
+            this.closeConnectionBTTN.Text = "Close connection";
+            this.closeConnectionBTTN.UseVisualStyleBackColor = true;
+            this.closeConnectionBTTN.Click += new System.EventHandler(this.closeConnectionBTTN_Click);
+            // 
             // GPSform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -254,6 +266,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ListBox CarsLB;
         private System.Windows.Forms.Label CarInfoLBL;
+        private System.Windows.Forms.Button closeConnectionBTTN;
     }
 }
 

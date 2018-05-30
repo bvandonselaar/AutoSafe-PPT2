@@ -16,5 +16,9 @@ namespace PTT2CarGps
             this.SignatureId = SignatureId;
             Path = new Trail();
         }
+        public override string ToString()
+        {
+            return "Car" + SignatureId;
+        }
     }
 }
