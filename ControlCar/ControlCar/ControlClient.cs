@@ -42,18 +42,23 @@ namespace ControlCar
         /// <returns> Succes condition </returns>
         public int SendSpeed(int commandNumber, byte speed)
         {
+            
+            
             byte catCmd = Convert.ToByte(224 + commandNumber);
             try
             {
                 if (speed != currentSpeed)
                 {
-                    byte[] data = { 0x0E, 0xE0, 0x06, catCmd, 0x00, speed };
-                    tcpStream.Write(data, 0, data.Length);
+                    byte[] data = { speed };
+                    Packet p = new Packet();
+                    byte[] message = p.Serialize(catCmd, data);
+                    tcpStream.Write(message, 0, message.Length);
                 }
                 else
                 {
-                    byte[] data = { 0x0E, 0xE0, 0x04, catCmd };
-                    tcpStream.Write(data, 0, data.Length);
+                    Packet p = new Packet();
+                    byte[] message = p.Serialize(catCmd, null);
+                    tcpStream.Write(message, 0, message.Length);
                 }
                 currentSpeed = speed;
                 return 1;

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2003
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocationTcpServer", "LocationTcpServer\LocationTcpServer.csproj", "{2BDC7E39-CAF4-46AB-A124-A05A0507D41F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2BDC7E39-CAF4-46AB-A124-A05A0507D41F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BDC7E39-CAF4-46AB-A124-A05A0507D41F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BDC7E39-CAF4-46AB-A124-A05A0507D41F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BDC7E39-CAF4-46AB-A124-A05A0507D41F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {69558E61-5EAF-4FD6-87CF-17814DB5DFD2}
+	EndGlobalSection
+EndGlobal

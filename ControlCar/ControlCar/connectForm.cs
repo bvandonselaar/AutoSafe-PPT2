@@ -23,7 +23,7 @@ namespace ControlCar
             textBox_ip.Text = "192.168.4.1";
             numeric_port.Value = 23;
             refreshTimer.Tick += new EventHandler(refreshTheStatus);
-            refreshTimer.Interval = 5000;
+            refreshTimer.Interval = 2000;
             refreshTimer.Start();
             label_status.Text = carController.ToString();
         }
