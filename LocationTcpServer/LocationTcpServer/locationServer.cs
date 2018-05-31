@@ -36,6 +36,10 @@ namespace LocationTcpServer
             }
         }
 
+        //Server stappenplan
+        //---------------------------------------------------------------------------------------
+
+        //Stap 1: server start met luisteren naar inkomende connecties
         public void InitiateListener(string ip, int port)
         {
             IP = ip;
@@ -49,18 +53,22 @@ namespace LocationTcpServer
             socketListener.Start();
         }
 
+        //Stap 2: server accepteert een inkomend connectie-verzoek
         public void AcceptConnection()
         {
             ESP e = new ESP(socketListener.AcceptTcpClient());
             connectedESPs.Add(e);
         }
 
+        //Stap 3: server kiest met welke connectie die ook echt wil praten
         public void StartTalkWith(int index)
         {
             currentTalkIndex = index;
             tcpStream = connectedESPs[currentTalkIndex].Client.GetStream();
         }
+        //---------------------------------------------------------------------------------------
 
+        
         public void Send(string message)
         {
             byte[] data = Encoding.ASCII.GetBytes(message);

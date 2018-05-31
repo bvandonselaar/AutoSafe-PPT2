@@ -27,13 +27,14 @@ namespace LocationTcpServer
             int port = (int)numeric_port.Value;
             server.InitiateListener(ip, port);
             groupBox_initiate.Enabled = false;
+            label_connection.Text = "Server: " + server.IP;
         }
 
         private async void button_choose_Click(object sender, EventArgs e)
         {
             bool loop = true;
             server.StartTalkWith((int)numeric_choose.Value);
-            MessageBox.Show(server.connectedESPs[(int)numeric_choose.Value].Ip.ToString());
+            label_connection.Text = "Server: " + server.IP + "\nConnected To: " + server.connectedESPs[(int)numeric_choose.Value].Ip.ToString();
             while (loop)
             {
                 try

@@ -39,6 +39,7 @@
             this.button_choose = new System.Windows.Forms.Button();
             this.button_send = new System.Windows.Forms.Button();
             this.checkBox_acceptConnections = new System.Windows.Forms.CheckBox();
+            this.label_connection = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_port)).BeginInit();
             this.groupBox_initiate.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_choose)).BeginInit();
@@ -152,11 +153,21 @@
             this.checkBox_acceptConnections.UseVisualStyleBackColor = true;
             this.checkBox_acceptConnections.CheckedChanged += new System.EventHandler(this.checkBox_acceptConnections_CheckedChanged);
             // 
+            // label_connection
+            // 
+            this.label_connection.AutoSize = true;
+            this.label_connection.Location = new System.Drawing.Point(12, 342);
+            this.label_connection.Name = "label_connection";
+            this.label_connection.Size = new System.Drawing.Size(41, 13);
+            this.label_connection.TabIndex = 13;
+            this.label_connection.Text = "Server:";
+            // 
             // locationServerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(655, 386);
+            this.Controls.Add(this.label_connection);
             this.Controls.Add(this.checkBox_acceptConnections);
             this.Controls.Add(this.button_send);
             this.Controls.Add(this.button_choose);
@@ -187,6 +198,7 @@
         private System.Windows.Forms.Button button_choose;
         private System.Windows.Forms.Button button_send;
         private System.Windows.Forms.CheckBox checkBox_acceptConnections;
+        private System.Windows.Forms.Label label_connection;
     }
 }
 
