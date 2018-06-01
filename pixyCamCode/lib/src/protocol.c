@@ -35,9 +35,19 @@ int packet_serialize(struct packet* packet, uint8_t* data, size_t* size)
         i += packet->length - PACKET_FIXED;
     }
 
+    uint8_t sum1 = 0;
+    uint8_t sum2 = 0;
+
+    for(int j = 0; j < i; j++)
+    {
+        sum1 = (uint8_t)((sum1 + data[j]) % 255);
+        sum2 = (uint8_t)((sum2 + sum1) % 255);
+    }
+    uint16_t checksum = (uint16_t)((sum2 << 8) | sum1);
+
     // Checksum
-    data[i++] = packet->checksum >> 8;
-    data[i++] = packet->checksum & 0xFF;
+    data[i++] = checksum >> 8;
+    data[i++] = checksum & 0xFF;
 
     *size = i;
 
@@ -60,7 +70,7 @@ int packet_deserialize(struct packet* packet, const uint8_t* data, const size_t 
     packet->length = data[i++];
 
     // Payload
-    packet->payload = malloc(packet->length - PACKET_FIXED);
+    malloc(packet->length - PACKET_FIXED);
 
     // Category + command
     packet->category = data[i] >> 5;
