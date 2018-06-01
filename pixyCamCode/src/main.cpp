@@ -79,8 +79,8 @@ void sendPositionProtocol(SignatureData* data, int count){
   uint8_t packetData[count * 5];
   for(int i = 0; i < count; i++){
     //Get moving average X and Y
-    uint16_t totalX = 0;
-    uint16_t totalY = 0;
+    long totalX = 0;
+    long totalY = 0;
     for(int j = 0; j < 10; j++){
       totalX += data[i].X[j];
       totalY += data[i].Y[j];
@@ -89,11 +89,11 @@ void sendPositionProtocol(SignatureData* data, int count){
     uint16_t Y = totalY / 10;
 
     //Create data
-    packetData[i * 5] = (data[i].signatureID);
-    packetData[i * 5 + 1] = X & 0x00FF;
-    packetData[i * 5 + 2] = X >> 8;
-    packetData[i * 5 + 3] = Y & 0x00FF;
-    packetData[i * 5 + 4] = Y >> 8;
+    packetData[i * 5] = (uint8_t)(data[i].signatureID);
+    packetData[i * 5 + 1] = (uint8_t)(X >> 8);
+    packetData[i * 5 + 2] = (uint8_t)(X & 0x00FF);
+    packetData[i * 5 + 3] = (uint8_t)(Y >> 8);
+    packetData[i * 5 + 4] = (uint8_t)(Y & 0x00FF);
   }
 
   //Make data packet
@@ -170,11 +170,9 @@ void printSignaturePos(Pixy* pixyCam, int count, int signature, int XorY){
 void loop()
 {
     int count = pixy.getBlocks();
-    processData(&pixy, count);
-    if(Serial.available()){
-      while(Serial.available()){
-        Serial.read();
-      }
-      sendPositionProtocol(allSignatureData, 7);
+    for(int i = 0; i < 10; i++){
+      processData(&pixy, count);
+      delay(10);
     }
+    sendPositionProtocol(allSignatureData, 7);
 }

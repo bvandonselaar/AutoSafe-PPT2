@@ -58,7 +58,7 @@ namespace PTT2CarGps
                 Checksum = (UInt16)((message[Length - 2] << 8) | message[Length - 1]); 
 
                 //Als de Fletcher16 en de zelf geschoven Checksum hetzelfde zijn, dan is het bericht goed en mag het worden ontcijferd
-                if (Checksum == Checksum)
+                if (Checksum == ControlChecksum)
                 {
                     Cat = (byte)(0b11100000 & (message[3])); //zet categorie
                     Cmd = (byte)(0b00011111 & (message[3])); //zet bericht
