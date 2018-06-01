@@ -15,6 +15,7 @@ namespace PTT2CarGps
     public partial class GPSform : Form
     {
         SerialPort port;
+        locationServer.LocationServer server;
         public List<Car> Cars;
         byte[] Protocol = new byte[100];
         int ProtocolByteCount = 0;
@@ -28,6 +29,7 @@ namespace PTT2CarGps
             InitializeComponent();
             SerialComLB.Items.Add("Not connected");
             Cars = new List<Car>();
+            server = new locationServer.LocationServer();
             comPortCBB.DataSource = SerialPort.GetPortNames();
             SerialTimer.Start();
         }
@@ -314,6 +316,47 @@ namespace PTT2CarGps
         private void closeConnectionBTTN_Click(object sender, EventArgs e)
         {
             port.Close();
+        }
+
+        private void button_initiate_Click(object sender, EventArgs e)
+        {
+            string ip = textBox_ip.Text;
+            int port = (int)numeric_port.Value;
+            server.InitiateListener(ip, port);
+            groupBox_initiate.Enabled = false;
+            label_connection.Text = "Server: " + server.IP + "\nConnected to: ";
+        }
+
+        private void checkBox_acceptConnections_CheckedChanged(object sender, EventArgs e)
+        {
+            server.setSearchingMode(checkBox_acceptConnections.Checked);
+        }
+
+        private async void button_choose_Click(object sender, EventArgs e)
+        {
+            bool loop = true;
+            server.StartTalkWith((int)numeric_choose.Value);
+            label_connection.Text = "Server: " + server.IP + "\nConnected To: " + server.connectedESPs[(int)numeric_choose.Value].Ip.ToString();
+            while (loop)
+            {
+                try
+                {
+                    byte[] bytes = await server.Receive();
+                    textBox_input.AppendText("Incoming: ");
+                    foreach (byte b in bytes)
+                    {
+                        textBox_input.AppendText(b.ToString());
+                    }
+                    textBox_input.AppendText("\n");
+                }
+                catch (ObjectDisposedException)
+                {
+                    loop = false;
+                    MessageBox.Show("Disconnected");
+                }
+
+
+            }
         }
     }
 }
