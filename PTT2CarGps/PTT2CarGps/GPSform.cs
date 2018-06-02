@@ -9,13 +9,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
 using System.IO;
+using PTT2CarGps.locationServer;
 
 namespace PTT2CarGps
 {
     public partial class GPSform : Form
     {
         SerialPort port;
-        locationServer.LocationServer server;
+        LocationServer server;
         public List<Car> Cars;
         byte[] Protocol = new byte[100];
         int ProtocolByteCount = 0;
@@ -29,7 +30,8 @@ namespace PTT2CarGps
             InitializeComponent();
             SerialComLB.Items.Add("Not connected");
             Cars = new List<Car>();
-            server = new locationServer.LocationServer();
+            server = new LocationServer();
+            groupBox_server.Enabled = false;
             comPortCBB.DataSource = SerialPort.GetPortNames();
             SerialTimer.Start();
         }
@@ -81,11 +83,11 @@ namespace PTT2CarGps
                 {
                     MessageBox.Show(ex.Message);
                 }
-                catch(System.IO.IOException ex)
+                catch(IOException ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
-                catch (System.UnauthorizedAccessException ex)
+                catch (UnauthorizedAccessException ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
@@ -253,14 +255,27 @@ namespace PTT2CarGps
         {
             string ip = textBox_ip.Text;
             int port = (int)numeric_port.Value;
-            server.InitiateListener(ip, port);
-            groupBox_initiate.Enabled = false;
-            label_connection.Text = "Server: " + server.IP + "\nConnected to: ";
+            try
+            {
+                server.InitiateListener(ip, port);
+                groupBox_initiate.Enabled = false;
+                groupBox_server.Enabled = true;
+                label_connection.Text = "Server: " + server.IP + "\nConnected To: ";
+            }
+            catch(FormatException)
+            {
+                MessageBox.Show("Ip format is not correct");
+            }
+            catch (System.Net.Sockets.SocketException)
+            {
+                MessageBox.Show("Wrong host Ip");
+            }
         }
 
-        private void checkBox_acceptConnections_CheckedChanged(object sender, EventArgs e)
+        private async void checkBox_acceptConnections_CheckedChanged(object sender, EventArgs e)
         {
             server.setSearchingMode(checkBox_acceptConnections.Checked);
+            if (checkBox_acceptConnections.Checked == true) { await ReceiveMessages(); }
         }
 
         private async void button_choose_Click(object sender, EventArgs e)
@@ -285,8 +300,39 @@ namespace PTT2CarGps
                     loop = false;
                     MessageBox.Show("Disconnected");
                 }
+                catch(NullReferenceException)
+                {
+                    textBox_input.AppendText("No Connection\n");
+                }
+            }
+        }
 
-
+        private async Task ReceiveMessages()
+        {
+            bool loop = true;
+            //server.StartTalkWith((int)numeric_choose.Value);
+            //label_connection.Text = "Server: " + server.IP + "\nConnected To: " + server.connectedESPs[(int)numeric_choose.Value].Ip.ToString();
+            while (loop)
+            {
+                try
+                {
+                    byte[] bytes = await server.Receive();
+                    textBox_input.AppendText("Incoming: ");
+                    foreach (byte b in bytes)
+                    {
+                        textBox_input.AppendText(b.ToString());
+                    }
+                    textBox_input.AppendText("\n");
+                }
+                catch (ObjectDisposedException)
+                {
+                    loop = false;
+                    MessageBox.Show("Disconnected");
+                }
+                catch (NullReferenceException)
+                {
+                    textBox_input.AppendText("No Connection\n");
+                }
             }
         }
 

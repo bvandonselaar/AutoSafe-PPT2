@@ -24,7 +24,7 @@ namespace PTT2CarGps.locationServer
             socketListener = null;
             connectedESPs = new List<ESP>();
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 200;
+            timer.Interval = 2000;
             timer.Tick += new EventHandler(TimerEventProcessor);
         }
 
@@ -34,12 +34,19 @@ namespace PTT2CarGps.locationServer
             {
                 AcceptConnection();
             }
-            StartTalkWith(currentTalkIndex);
+
+            if (currentTalkIndex < connectedESPs.Count)
+            {
+                StartTalkWith(currentTalkIndex);
+                
+            }
+            
             currentTalkIndex++;
             if(currentTalkIndex > connectedESPs.Count)
             {
                 currentTalkIndex = 0;
             }
+            
         }
 
         //Server stappenplan
@@ -124,7 +131,7 @@ namespace PTT2CarGps.locationServer
             if (count > 5)
             {
                 tcpStream.Close();
-                connectedESPs.RemoveRange(currentTalkIndex, 0);
+                connectedESPs.RemoveRange(currentTalkIndex, 1);
             }
             return bytes; 
         }
