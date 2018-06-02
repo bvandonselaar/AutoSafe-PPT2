@@ -60,23 +60,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.numeric_port = new System.Windows.Forms.NumericUpDown();
-<<<<<<< HEAD
-=======
             this.groupBox_server = new System.Windows.Forms.GroupBox();
->>>>>>> a095a67fce1de10d398e6a0bcd33c84e6aacfe2f
-            this.infoSS.SuspendLayout();
-            this.tabControl_switchview.SuspendLayout();
-            this.tabPage_gps.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CarLocationsPB)).BeginInit();
-            this.settingsGB.SuspendLayout();
-            this.tabPage_server.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_choose)).BeginInit();
-            this.groupBox_initiate.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_port)).BeginInit();
-<<<<<<< HEAD
-=======
             this.groupBox_server.SuspendLayout();
->>>>>>> a095a67fce1de10d398e6a0bcd33c84e6aacfe2f
             this.SuspendLayout();
             // 
             // SerialTimer
@@ -280,15 +265,7 @@
             // 
             // tabPage_server
             // 
-<<<<<<< HEAD
-            this.tabPage_server.Controls.Add(this.button_choose);
-            this.tabPage_server.Controls.Add(this.numeric_choose);
-            this.tabPage_server.Controls.Add(this.textBox_input);
-            this.tabPage_server.Controls.Add(this.checkBox_acceptConnections);
-            this.tabPage_server.Controls.Add(this.label_connection);
-=======
             this.tabPage_server.Controls.Add(this.groupBox_server);
->>>>>>> a095a67fce1de10d398e6a0bcd33c84e6aacfe2f
             this.tabPage_server.Controls.Add(this.groupBox_initiate);
             this.tabPage_server.Location = new System.Drawing.Point(4, 22);
             this.tabPage_server.Name = "tabPage_server";
@@ -300,11 +277,7 @@
             // 
             // button_choose
             // 
-<<<<<<< HEAD
-            this.button_choose.Location = new System.Drawing.Point(249, 88);
-=======
             this.button_choose.Location = new System.Drawing.Point(246, 48);
->>>>>>> a095a67fce1de10d398e6a0bcd33c84e6aacfe2f
             this.button_choose.Name = "button_choose";
             this.button_choose.Size = new System.Drawing.Size(138, 23);
             this.button_choose.TabIndex = 18;
@@ -314,22 +287,14 @@
             // 
             // numeric_choose
             // 
-<<<<<<< HEAD
-            this.numeric_choose.Location = new System.Drawing.Point(249, 63);
-=======
             this.numeric_choose.Location = new System.Drawing.Point(246, 23);
->>>>>>> a095a67fce1de10d398e6a0bcd33c84e6aacfe2f
             this.numeric_choose.Name = "numeric_choose";
             this.numeric_choose.Size = new System.Drawing.Size(138, 20);
             this.numeric_choose.TabIndex = 17;
             // 
             // textBox_input
             // 
-<<<<<<< HEAD
-            this.textBox_input.Location = new System.Drawing.Point(8, 192);
-=======
             this.textBox_input.Location = new System.Drawing.Point(18, 98);
->>>>>>> a095a67fce1de10d398e6a0bcd33c84e6aacfe2f
             this.textBox_input.Multiline = true;
             this.textBox_input.Name = "textBox_input";
             this.textBox_input.ReadOnly = true;
@@ -339,11 +304,7 @@
             // checkBox_acceptConnections
             // 
             this.checkBox_acceptConnections.AutoSize = true;
-<<<<<<< HEAD
-            this.checkBox_acceptConnections.Location = new System.Drawing.Point(8, 117);
-=======
             this.checkBox_acceptConnections.Location = new System.Drawing.Point(18, 23);
->>>>>>> a095a67fce1de10d398e6a0bcd33c84e6aacfe2f
             this.checkBox_acceptConnections.Name = "checkBox_acceptConnections";
             this.checkBox_acceptConnections.Size = new System.Drawing.Size(166, 17);
             this.checkBox_acceptConnections.TabIndex = 15;
@@ -354,11 +315,7 @@
             // label_connection
             // 
             this.label_connection.AutoSize = true;
-<<<<<<< HEAD
-            this.label_connection.Location = new System.Drawing.Point(6, 157);
-=======
             this.label_connection.Location = new System.Drawing.Point(15, 53);
->>>>>>> a095a67fce1de10d398e6a0bcd33c84e6aacfe2f
             this.label_connection.Name = "label_connection";
             this.label_connection.Size = new System.Drawing.Size(77, 26);
             this.label_connection.TabIndex = 14;
@@ -425,8 +382,6 @@
             this.numeric_port.Size = new System.Drawing.Size(100, 20);
             this.numeric_port.TabIndex = 2;
             // 
-<<<<<<< HEAD
-=======
             // groupBox_server
             // 
             this.groupBox_server.Controls.Add(this.textBox_input);
@@ -441,7 +396,6 @@
             this.groupBox_server.TabStop = false;
             this.groupBox_server.Text = "Server";
             // 
->>>>>>> a095a67fce1de10d398e6a0bcd33c84e6aacfe2f
             // GPSform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -461,19 +415,8 @@
             this.settingsGB.ResumeLayout(false);
             this.settingsGB.PerformLayout();
             this.tabPage_server.ResumeLayout(false);
-<<<<<<< HEAD
-            this.tabPage_server.PerformLayout();
-=======
->>>>>>> a095a67fce1de10d398e6a0bcd33c84e6aacfe2f
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_choose)).EndInit();
-            this.groupBox_initiate.ResumeLayout(false);
-            this.groupBox_initiate.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_port)).EndInit();
-<<<<<<< HEAD
-=======
             this.groupBox_server.ResumeLayout(false);
             this.groupBox_server.PerformLayout();
->>>>>>> a095a67fce1de10d398e6a0bcd33c84e6aacfe2f
             this.ResumeLayout(false);
             this.PerformLayout();
 
