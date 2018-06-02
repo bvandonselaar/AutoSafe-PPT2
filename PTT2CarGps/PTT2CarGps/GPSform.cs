@@ -64,11 +64,6 @@ namespace PTT2CarGps
             DrawPositions();
         }
 
-        private void refreshComPortBTTN_Click(object sender, EventArgs e)
-        {
-            comPortCBB.DataSource = SerialPort.GetPortNames();
-        }
-
         private void SetSerialPort()
         {
             if(!string.IsNullOrEmpty(baudRateCBB.Text) && !string.IsNullOrEmpty(comPortCBB.Text))
@@ -191,11 +186,7 @@ namespace PTT2CarGps
                 SerialComLB.Items.RemoveAt(0);
             }
         }
-
-        private void ConnectBTTN_Click(object sender, EventArgs e)
-        {
-            SetSerialPort();
-        }
+        
 
         public void AddPositions(Point[] positions, int[] signatures)
         {
@@ -258,66 +249,6 @@ namespace PTT2CarGps
             CarLocationsPB.Invalidate();
         }
 
-        private void CarLocationsPB_Paint(object sender, PaintEventArgs e)
-        {
-            Graphics Canvas = e.Graphics;
-            Canvas.ScaleTransform((float)2, (float)2);
-            Random r = new Random(10 );
-            foreach (Car c in Cars)
-            {
-                if (c.Path.GetPositions.Count > 0 && !(c.Path.Position.X == 0 && c.Path.Position.Y == 0))
-                {
-                    Pen pen = new Pen(Color.FromArgb(r.Next(100, 255), r.Next(100, 255), r.Next(100, 255)));
-                    Point pos = c.Path.Position;
-                    pos.Offset(-15, -15);
-                    Canvas.DrawEllipse
-                        (
-                            pen,
-                            new Rectangle(pos, new Size(30, 30))
-                        );
-
-                    if (c.Path.GetPoints.Length > 1)
-                    {
-                        Canvas.DrawLines(pen, c.Path.GetPoints);
-                        Canvas.DrawLine
-                            (
-                                new Pen(Color.White, 2),
-                                c.Path.GetPositions[c.Path.GetPositions.Count - 1].Location,
-                                new Point
-                                (
-                                    c.Path.GetPositions[c.Path.GetPositions.Count - 1].Location.X + c.Path.Speed.X,
-                                    c.Path.GetPositions[c.Path.GetPositions.Count - 1].Location.Y + c.Path.Speed.Y
-                                )
-                            );
-                    }
-
-                    Canvas.DrawString("ID:" + c.SignatureId, DefaultFont, new SolidBrush(Color.White), pos);
-                }
-            }
-            
-            Canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear;
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            TestTrailDrawing();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Cars.Clear();
-        }
-
-        private void CarsLB_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            selectedCar = (Car)CarsLB.SelectedItem;
-        }
-
-        private void closeConnectionBTTN_Click(object sender, EventArgs e)
-        {
-            port.Close();
-        }
-
         private void button_initiate_Click(object sender, EventArgs e)
         {
             string ip = textBox_ip.Text;
@@ -357,6 +288,77 @@ namespace PTT2CarGps
 
 
             }
+        }
+
+        private void ConnectBTTN_Click_1(object sender, EventArgs e)
+        {
+            SetSerialPort();
+        }
+
+        private void refreshComPortBTTN_Click_1(object sender, EventArgs e)
+        {
+            comPortCBB.DataSource = SerialPort.GetPortNames();
+        }
+
+        private void ClearBTTN_Click(object sender, EventArgs e)
+        {
+            Cars.Clear();
+        }
+
+        private void TestBTTN_Click(object sender, EventArgs e)
+        {
+            TestTrailDrawing();
+        }
+
+        private void closeConnectionBTTN_Click_1(object sender, EventArgs e)
+        {
+            port.Close();
+        }
+
+        private void CarLocationsPB_Paint_1(object sender, PaintEventArgs e)
+
+        {
+            Graphics Canvas = e.Graphics;
+            Canvas.ScaleTransform((float)2, (float)2);
+            Random r = new Random(10);
+            foreach (Car c in Cars)
+            {
+                if (c.Path.GetPositions.Count > 0 && !(c.Path.Position.X == 0 && c.Path.Position.Y == 0))
+                {
+                    Pen pen = new Pen(Color.FromArgb(r.Next(100, 255), r.Next(100, 255), r.Next(100, 255)));
+                    Point pos = c.Path.Position;
+                    pos.Offset(-15, -15);
+                    Canvas.DrawEllipse
+                        (
+                            pen,
+                            new Rectangle(pos, new Size(30, 30))
+                        );
+
+                    if (c.Path.GetPoints.Length > 1)
+                    {
+                        Canvas.DrawLines(pen, c.Path.GetPoints);
+                        Canvas.DrawLine
+                            (
+                                new Pen(Color.White, 2),
+                                c.Path.GetPositions[c.Path.GetPositions.Count - 1].Location,
+                                new Point
+                                (
+                                    c.Path.GetPositions[c.Path.GetPositions.Count - 1].Location.X + c.Path.Speed.X,
+                                    c.Path.GetPositions[c.Path.GetPositions.Count - 1].Location.Y + c.Path.Speed.Y
+                                )
+                            );
+                    }
+
+                    Canvas.DrawString("ID:" + c.SignatureId, DefaultFont, new SolidBrush(Color.White), pos);
+                }
+            }
+
+            Canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear;
+        }
+
+        private void CarsLB_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            selectedCar = (Car)CarsLB.SelectedItem;
         }
     }
 }

@@ -34,11 +34,10 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl_switchview = new System.Windows.Forms.TabControl();
             this.tabPage_gps = new System.Windows.Forms.TabPage();
-            this.tabPage_server = new System.Windows.Forms.TabPage();
             this.CarInfoLBL = new System.Windows.Forms.Label();
             this.CarsLB = new System.Windows.Forms.ListBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.ClearBTTN = new System.Windows.Forms.Button();
+            this.TestBTTN = new System.Windows.Forms.Button();
             this.CarLocationsPB = new System.Windows.Forms.PictureBox();
             this.settingsGB = new System.Windows.Forms.GroupBox();
             this.closeConnectionBTTN = new System.Windows.Forms.Button();
@@ -49,26 +48,27 @@
             this.refreshComPortBTTN = new System.Windows.Forms.Button();
             this.comPortCBB = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.tabPage_server = new System.Windows.Forms.TabPage();
+            this.button_choose = new System.Windows.Forms.Button();
+            this.numeric_choose = new System.Windows.Forms.NumericUpDown();
+            this.textBox_input = new System.Windows.Forms.TextBox();
+            this.checkBox_acceptConnections = new System.Windows.Forms.CheckBox();
+            this.label_connection = new System.Windows.Forms.Label();
             this.groupBox_initiate = new System.Windows.Forms.GroupBox();
             this.textBox_ip = new System.Windows.Forms.TextBox();
             this.button_initiate = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.numeric_port = new System.Windows.Forms.NumericUpDown();
-            this.label_connection = new System.Windows.Forms.Label();
-            this.checkBox_acceptConnections = new System.Windows.Forms.CheckBox();
-            this.textBox_input = new System.Windows.Forms.TextBox();
-            this.button_choose = new System.Windows.Forms.Button();
-            this.numeric_choose = new System.Windows.Forms.NumericUpDown();
             this.infoSS.SuspendLayout();
             this.tabControl_switchview.SuspendLayout();
             this.tabPage_gps.SuspendLayout();
-            this.tabPage_server.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CarLocationsPB)).BeginInit();
             this.settingsGB.SuspendLayout();
+            this.tabPage_server.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numeric_choose)).BeginInit();
             this.groupBox_initiate.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_port)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_choose)).BeginInit();
             this.SuspendLayout();
             // 
             // SerialTimer
@@ -106,8 +106,8 @@
             // 
             this.tabPage_gps.Controls.Add(this.CarInfoLBL);
             this.tabPage_gps.Controls.Add(this.CarsLB);
-            this.tabPage_gps.Controls.Add(this.button2);
-            this.tabPage_gps.Controls.Add(this.button1);
+            this.tabPage_gps.Controls.Add(this.ClearBTTN);
+            this.tabPage_gps.Controls.Add(this.TestBTTN);
             this.tabPage_gps.Controls.Add(this.CarLocationsPB);
             this.tabPage_gps.Controls.Add(this.settingsGB);
             this.tabPage_gps.Location = new System.Drawing.Point(4, 22);
@@ -117,22 +117,6 @@
             this.tabPage_gps.TabIndex = 0;
             this.tabPage_gps.Text = "GPS";
             this.tabPage_gps.UseVisualStyleBackColor = true;
-            // 
-            // tabPage_server
-            // 
-            this.tabPage_server.Controls.Add(this.button_choose);
-            this.tabPage_server.Controls.Add(this.numeric_choose);
-            this.tabPage_server.Controls.Add(this.textBox_input);
-            this.tabPage_server.Controls.Add(this.checkBox_acceptConnections);
-            this.tabPage_server.Controls.Add(this.label_connection);
-            this.tabPage_server.Controls.Add(this.groupBox_initiate);
-            this.tabPage_server.Location = new System.Drawing.Point(4, 22);
-            this.tabPage_server.Name = "tabPage_server";
-            this.tabPage_server.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage_server.Size = new System.Drawing.Size(1003, 656);
-            this.tabPage_server.TabIndex = 1;
-            this.tabPage_server.Text = "Server";
-            this.tabPage_server.UseVisualStyleBackColor = true;
             // 
             // CarInfoLBL
             // 
@@ -150,24 +134,27 @@
             this.CarsLB.Name = "CarsLB";
             this.CarsLB.Size = new System.Drawing.Size(172, 160);
             this.CarsLB.TabIndex = 11;
+            this.CarsLB.SelectedIndexChanged += new System.EventHandler(this.CarsLB_SelectedIndexChanged_1);
             // 
-            // button2
+            // ClearBTTN
             // 
-            this.button2.Location = new System.Drawing.Point(709, 412);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 10;
-            this.button2.Text = "Clear";
-            this.button2.UseVisualStyleBackColor = true;
+            this.ClearBTTN.Location = new System.Drawing.Point(709, 412);
+            this.ClearBTTN.Name = "ClearBTTN";
+            this.ClearBTTN.Size = new System.Drawing.Size(75, 23);
+            this.ClearBTTN.TabIndex = 10;
+            this.ClearBTTN.Text = "Clear";
+            this.ClearBTTN.UseVisualStyleBackColor = true;
+            this.ClearBTTN.Click += new System.EventHandler(this.ClearBTTN_Click);
             // 
-            // button1
+            // TestBTTN
             // 
-            this.button1.Location = new System.Drawing.Point(790, 412);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Test";
-            this.button1.UseVisualStyleBackColor = true;
+            this.TestBTTN.Location = new System.Drawing.Point(790, 412);
+            this.TestBTTN.Name = "TestBTTN";
+            this.TestBTTN.Size = new System.Drawing.Size(75, 23);
+            this.TestBTTN.TabIndex = 9;
+            this.TestBTTN.Text = "Test";
+            this.TestBTTN.UseVisualStyleBackColor = true;
+            this.TestBTTN.Click += new System.EventHandler(this.TestBTTN_Click);
             // 
             // CarLocationsPB
             // 
@@ -177,6 +164,7 @@
             this.CarLocationsPB.Size = new System.Drawing.Size(640, 400);
             this.CarLocationsPB.TabIndex = 8;
             this.CarLocationsPB.TabStop = false;
+            this.CarLocationsPB.Paint += new System.Windows.Forms.PaintEventHandler(this.CarLocationsPB_Paint_1);
             // 
             // settingsGB
             // 
@@ -203,6 +191,7 @@
             this.closeConnectionBTTN.TabIndex = 7;
             this.closeConnectionBTTN.Text = "Close connection";
             this.closeConnectionBTTN.UseVisualStyleBackColor = true;
+            this.closeConnectionBTTN.Click += new System.EventHandler(this.closeConnectionBTTN_Click_1);
             // 
             // SerialComLB
             // 
@@ -220,6 +209,7 @@
             this.ConnectBTTN.TabIndex = 5;
             this.ConnectBTTN.Text = "Connect";
             this.ConnectBTTN.UseVisualStyleBackColor = true;
+            this.ConnectBTTN.Click += new System.EventHandler(this.ConnectBTTN_Click_1);
             // 
             // label2
             // 
@@ -261,6 +251,7 @@
             this.refreshComPortBTTN.TabIndex = 2;
             this.refreshComPortBTTN.Text = "Refresh COM ports";
             this.refreshComPortBTTN.UseVisualStyleBackColor = true;
+            this.refreshComPortBTTN.Click += new System.EventHandler(this.refreshComPortBTTN_Click_1);
             // 
             // comPortCBB
             // 
@@ -278,6 +269,68 @@
             this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "COM port:";
+            // 
+            // tabPage_server
+            // 
+            this.tabPage_server.Controls.Add(this.button_choose);
+            this.tabPage_server.Controls.Add(this.numeric_choose);
+            this.tabPage_server.Controls.Add(this.textBox_input);
+            this.tabPage_server.Controls.Add(this.checkBox_acceptConnections);
+            this.tabPage_server.Controls.Add(this.label_connection);
+            this.tabPage_server.Controls.Add(this.groupBox_initiate);
+            this.tabPage_server.Location = new System.Drawing.Point(4, 22);
+            this.tabPage_server.Name = "tabPage_server";
+            this.tabPage_server.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage_server.Size = new System.Drawing.Size(1003, 656);
+            this.tabPage_server.TabIndex = 1;
+            this.tabPage_server.Text = "Server";
+            this.tabPage_server.UseVisualStyleBackColor = true;
+            // 
+            // button_choose
+            // 
+            this.button_choose.Location = new System.Drawing.Point(249, 88);
+            this.button_choose.Name = "button_choose";
+            this.button_choose.Size = new System.Drawing.Size(138, 23);
+            this.button_choose.TabIndex = 18;
+            this.button_choose.Text = "Choose";
+            this.button_choose.UseVisualStyleBackColor = true;
+            this.button_choose.Click += new System.EventHandler(this.button_choose_Click);
+            // 
+            // numeric_choose
+            // 
+            this.numeric_choose.Location = new System.Drawing.Point(249, 63);
+            this.numeric_choose.Name = "numeric_choose";
+            this.numeric_choose.Size = new System.Drawing.Size(138, 20);
+            this.numeric_choose.TabIndex = 17;
+            // 
+            // textBox_input
+            // 
+            this.textBox_input.Location = new System.Drawing.Point(8, 192);
+            this.textBox_input.Multiline = true;
+            this.textBox_input.Name = "textBox_input";
+            this.textBox_input.ReadOnly = true;
+            this.textBox_input.Size = new System.Drawing.Size(494, 247);
+            this.textBox_input.TabIndex = 16;
+            // 
+            // checkBox_acceptConnections
+            // 
+            this.checkBox_acceptConnections.AutoSize = true;
+            this.checkBox_acceptConnections.Location = new System.Drawing.Point(8, 117);
+            this.checkBox_acceptConnections.Name = "checkBox_acceptConnections";
+            this.checkBox_acceptConnections.Size = new System.Drawing.Size(166, 17);
+            this.checkBox_acceptConnections.TabIndex = 15;
+            this.checkBox_acceptConnections.Text = "Accept incoming connections";
+            this.checkBox_acceptConnections.UseVisualStyleBackColor = true;
+            this.checkBox_acceptConnections.CheckedChanged += new System.EventHandler(this.checkBox_acceptConnections_CheckedChanged);
+            // 
+            // label_connection
+            // 
+            this.label_connection.AutoSize = true;
+            this.label_connection.Location = new System.Drawing.Point(6, 157);
+            this.label_connection.Name = "label_connection";
+            this.label_connection.Size = new System.Drawing.Size(77, 26);
+            this.label_connection.TabIndex = 14;
+            this.label_connection.Text = "Server: \r\nConnected to: ";
             // 
             // groupBox_initiate
             // 
@@ -340,52 +393,6 @@
             this.numeric_port.Size = new System.Drawing.Size(100, 20);
             this.numeric_port.TabIndex = 2;
             // 
-            // label_connection
-            // 
-            this.label_connection.AutoSize = true;
-            this.label_connection.Location = new System.Drawing.Point(6, 157);
-            this.label_connection.Name = "label_connection";
-            this.label_connection.Size = new System.Drawing.Size(77, 26);
-            this.label_connection.TabIndex = 14;
-            this.label_connection.Text = "Server: \r\nConnected to: ";
-            // 
-            // checkBox_acceptConnections
-            // 
-            this.checkBox_acceptConnections.AutoSize = true;
-            this.checkBox_acceptConnections.Location = new System.Drawing.Point(8, 117);
-            this.checkBox_acceptConnections.Name = "checkBox_acceptConnections";
-            this.checkBox_acceptConnections.Size = new System.Drawing.Size(166, 17);
-            this.checkBox_acceptConnections.TabIndex = 15;
-            this.checkBox_acceptConnections.Text = "Accept incoming connections";
-            this.checkBox_acceptConnections.UseVisualStyleBackColor = true;
-            this.checkBox_acceptConnections.CheckedChanged += new System.EventHandler(this.checkBox_acceptConnections_CheckedChanged);
-            // 
-            // textBox_input
-            // 
-            this.textBox_input.Location = new System.Drawing.Point(8, 192);
-            this.textBox_input.Multiline = true;
-            this.textBox_input.Name = "textBox_input";
-            this.textBox_input.ReadOnly = true;
-            this.textBox_input.Size = new System.Drawing.Size(494, 247);
-            this.textBox_input.TabIndex = 16;
-            // 
-            // button_choose
-            // 
-            this.button_choose.Location = new System.Drawing.Point(249, 88);
-            this.button_choose.Name = "button_choose";
-            this.button_choose.Size = new System.Drawing.Size(138, 23);
-            this.button_choose.TabIndex = 18;
-            this.button_choose.Text = "Choose";
-            this.button_choose.UseVisualStyleBackColor = true;
-            this.button_choose.Click += new System.EventHandler(this.button_choose_Click);
-            // 
-            // numeric_choose
-            // 
-            this.numeric_choose.Location = new System.Drawing.Point(249, 63);
-            this.numeric_choose.Name = "numeric_choose";
-            this.numeric_choose.Size = new System.Drawing.Size(138, 20);
-            this.numeric_choose.TabIndex = 17;
-            // 
             // GPSform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -401,15 +408,15 @@
             this.tabControl_switchview.ResumeLayout(false);
             this.tabPage_gps.ResumeLayout(false);
             this.tabPage_gps.PerformLayout();
-            this.tabPage_server.ResumeLayout(false);
-            this.tabPage_server.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CarLocationsPB)).EndInit();
             this.settingsGB.ResumeLayout(false);
             this.settingsGB.PerformLayout();
+            this.tabPage_server.ResumeLayout(false);
+            this.tabPage_server.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numeric_choose)).EndInit();
             this.groupBox_initiate.ResumeLayout(false);
             this.groupBox_initiate.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_port)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_choose)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -423,8 +430,8 @@
         private System.Windows.Forms.TabPage tabPage_gps;
         private System.Windows.Forms.Label CarInfoLBL;
         private System.Windows.Forms.ListBox CarsLB;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button ClearBTTN;
+        private System.Windows.Forms.Button TestBTTN;
         private System.Windows.Forms.PictureBox CarLocationsPB;
         private System.Windows.Forms.GroupBox settingsGB;
         private System.Windows.Forms.Button closeConnectionBTTN;
