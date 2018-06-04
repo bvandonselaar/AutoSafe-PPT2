@@ -13,7 +13,7 @@ namespace PTT2CarGps.locationServer
         private TcpListener socketListener;
         private NetworkStream tcpStream;
         private System.Windows.Forms.Timer timer;
-        private int currentTalkIndex = 0;
+        public int currentTalkIndex { get; private set; } = 0;
       
         public List<ESP> connectedESPs { get; private set; }
         public string IP { get; private set; }
@@ -24,7 +24,7 @@ namespace PTT2CarGps.locationServer
             socketListener = null;
             connectedESPs = new List<ESP>();
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 2000;
+            timer.Interval = 1000;
             timer.Tick += new EventHandler(TimerEventProcessor);
         }
 
@@ -38,15 +38,17 @@ namespace PTT2CarGps.locationServer
             if (currentTalkIndex < connectedESPs.Count)
             {
                 StartTalkWith(currentTalkIndex);
-                
+                currentTalkIndex++;
+                if (currentTalkIndex > connectedESPs.Count - 1)
+                {
+                    currentTalkIndex = 0;
+                }
             }
             
-            currentTalkIndex++;
-            if(currentTalkIndex > connectedESPs.Count)
-            {
-                currentTalkIndex = 0;
-            }
             
+
+
+
         }
 
         //Server stappenplan
@@ -118,20 +120,24 @@ namespace PTT2CarGps.locationServer
         public async Task<byte[]> Receive()
         {
             byte[] bytes = new byte[30];
-            await tcpStream.ReadAsync(bytes, 0, bytes.Length);
-            foreach(byte b in bytes)
+            if (tcpStream.CanRead)
             {
-                if(b != 0)
+                await tcpStream.ReadAsync(bytes, 0, bytes.Length);
+
+                foreach (byte b in bytes)
                 {
-                    count = 0;
-                    return bytes;
+                    if (b != 0)
+                    {
+                        count = 0;
+                        return bytes;
+                    }
                 }
-            }
-            count++;
-            if (count > 5)
-            {
-                tcpStream.Close();
-                connectedESPs.RemoveRange(currentTalkIndex, 1);
+                count++;
+                if (count > 5)
+                {
+                    tcpStream.Close();
+                    connectedESPs.RemoveRange(currentTalkIndex, 1);
+                }
             }
             return bytes; 
         }

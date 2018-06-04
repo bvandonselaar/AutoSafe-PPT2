@@ -344,7 +344,10 @@ namespace PTT2CarGps
         private async void checkBox_acceptConnections_CheckedChanged(object sender, EventArgs e)
         {
             server.setSearchingMode(checkBox_acceptConnections.Checked);
-            if (checkBox_acceptConnections.Checked == true) { await ReceiveMessages(); }
+            if (server.connectedESPs.Count > 0)
+            {
+                if (checkBox_acceptConnections.Checked == true) { await ReceiveMessages(); }
+            }
         }
 
         private async void button_choose_Click(object sender, EventArgs e)
@@ -379,28 +382,26 @@ namespace PTT2CarGps
         private async Task ReceiveMessages()
         {
             bool loop = true;
-            //server.StartTalkWith((int)numeric_choose.Value);
-            //label_connection.Text = "Server: " + server.IP + "\nConnected To: " + server.connectedESPs[(int)numeric_choose.Value].Ip.ToString();
             while (loop)
             {
+
                 try
                 {
+                    label_connection.Text = "Server: " + server.IP + "\nConnected To: " + server.connectedESPs[server.currentTalkIndex].Ip.ToString();
+                    
                     byte[] bytes = await server.Receive();
                     textBox_input.AppendText("Incoming: ");
+                    
                     foreach (byte b in bytes)
                     {
-                        textBox_input.AppendText(b.ToString());
+                            textBox_input.AppendText(b.ToString());
                     }
                     textBox_input.AppendText("\n");
                 }
                 catch (ObjectDisposedException)
                 {
-                    loop = false;
-                    MessageBox.Show("Disconnected");
-                }
-                catch (NullReferenceException)
-                {
-                    textBox_input.AppendText("No Connection\n");
+                        loop = false;
+                        MessageBox.Show("Disconnected");
                 }
             }
         }
