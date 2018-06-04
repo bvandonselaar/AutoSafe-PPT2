@@ -51,13 +51,26 @@
             this.tabPage_server = new System.Windows.Forms.TabPage();
             this.groupBox_server = new System.Windows.Forms.GroupBox();
             this.textBox_input = new System.Windows.Forms.TextBox();
+<<<<<<< HEAD
             this.label_connection = new System.Windows.Forms.Label();
+=======
+            this.button_choose = new System.Windows.Forms.Button();
+            this.label_connection = new System.Windows.Forms.Label();
+            this.numeric_choose = new System.Windows.Forms.NumericUpDown();
+            this.checkBox_acceptConnections = new System.Windows.Forms.CheckBox();
+>>>>>>> b38693e83442219900c0aca0842c8de587d9cc91
             this.groupBox_initiate = new System.Windows.Forms.GroupBox();
             this.textBox_ip = new System.Windows.Forms.TextBox();
             this.button_initiate = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.numeric_port = new System.Windows.Forms.NumericUpDown();
+<<<<<<< HEAD
+=======
+            this.IpAddressTB = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.SetIpBTTN = new System.Windows.Forms.Button();
+>>>>>>> b38693e83442219900c0aca0842c8de587d9cc91
             this.infoSS.SuspendLayout();
             this.tabControl_switchview.SuspendLayout();
             this.tabPage_gps.SuspendLayout();
@@ -65,6 +78,10 @@
             this.settingsGB.SuspendLayout();
             this.tabPage_server.SuspendLayout();
             this.groupBox_server.SuspendLayout();
+<<<<<<< HEAD
+=======
+            ((System.ComponentModel.ISupportInitialize)(this.numeric_choose)).BeginInit();
+>>>>>>> b38693e83442219900c0aca0842c8de587d9cc91
             this.groupBox_initiate.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_port)).BeginInit();
             this.SuspendLayout();
@@ -102,6 +119,9 @@
             // 
             // tabPage_gps
             // 
+            this.tabPage_gps.Controls.Add(this.SetIpBTTN);
+            this.tabPage_gps.Controls.Add(this.label5);
+            this.tabPage_gps.Controls.Add(this.IpAddressTB);
             this.tabPage_gps.Controls.Add(this.CarInfoLBL);
             this.tabPage_gps.Controls.Add(this.CarsLB);
             this.tabPage_gps.Controls.Add(this.ClearBTTN);
@@ -281,6 +301,51 @@
             this.tabPage_server.UseVisualStyleBackColor = true;
             // 
             // groupBox_server
+<<<<<<< HEAD
+=======
+            // 
+            this.groupBox_server.Controls.Add(this.textBox_input);
+            this.groupBox_server.Controls.Add(this.button_choose);
+            this.groupBox_server.Controls.Add(this.label_connection);
+            this.groupBox_server.Controls.Add(this.numeric_choose);
+            this.groupBox_server.Controls.Add(this.checkBox_acceptConnections);
+            this.groupBox_server.Location = new System.Drawing.Point(8, 117);
+            this.groupBox_server.Name = "groupBox_server";
+            this.groupBox_server.Size = new System.Drawing.Size(527, 363);
+            this.groupBox_server.TabIndex = 19;
+            this.groupBox_server.TabStop = false;
+            this.groupBox_server.Text = "Server";
+            // 
+            // textBox_input
+            // 
+            this.textBox_input.Location = new System.Drawing.Point(18, 98);
+            this.textBox_input.Multiline = true;
+            this.textBox_input.Name = "textBox_input";
+            this.textBox_input.ReadOnly = true;
+            this.textBox_input.Size = new System.Drawing.Size(494, 247);
+            this.textBox_input.TabIndex = 16;
+            // 
+            // button_choose
+            // 
+            this.button_choose.Location = new System.Drawing.Point(246, 48);
+            this.button_choose.Name = "button_choose";
+            this.button_choose.Size = new System.Drawing.Size(138, 23);
+            this.button_choose.TabIndex = 18;
+            this.button_choose.Text = "Choose";
+            this.button_choose.UseVisualStyleBackColor = true;
+            this.button_choose.Click += new System.EventHandler(this.button_choose_Click);
+            // 
+            // label_connection
+            // 
+            this.label_connection.AutoSize = true;
+            this.label_connection.Location = new System.Drawing.Point(15, 53);
+            this.label_connection.Name = "label_connection";
+            this.label_connection.Size = new System.Drawing.Size(77, 26);
+            this.label_connection.TabIndex = 14;
+            this.label_connection.Text = "Server: \r\nConnected to: ";
+            // 
+            // numeric_choose
+>>>>>>> b38693e83442219900c0aca0842c8de587d9cc91
             // 
             this.groupBox_server.Controls.Add(this.textBox_input);
             this.groupBox_server.Controls.Add(this.label_connection);
@@ -291,6 +356,7 @@
             this.groupBox_server.TabStop = false;
             this.groupBox_server.Text = "Server";
             // 
+<<<<<<< HEAD
             // textBox_input
             // 
             this.textBox_input.Location = new System.Drawing.Point(18, 98);
@@ -308,6 +374,18 @@
             this.label_connection.Size = new System.Drawing.Size(77, 26);
             this.label_connection.TabIndex = 14;
             this.label_connection.Text = "Server: \r\nConnected to: ";
+=======
+            // checkBox_acceptConnections
+            // 
+            this.checkBox_acceptConnections.AutoSize = true;
+            this.checkBox_acceptConnections.Location = new System.Drawing.Point(18, 23);
+            this.checkBox_acceptConnections.Name = "checkBox_acceptConnections";
+            this.checkBox_acceptConnections.Size = new System.Drawing.Size(166, 17);
+            this.checkBox_acceptConnections.TabIndex = 15;
+            this.checkBox_acceptConnections.Text = "Accept incoming connections";
+            this.checkBox_acceptConnections.UseVisualStyleBackColor = true;
+            this.checkBox_acceptConnections.CheckedChanged += new System.EventHandler(this.checkBox_acceptConnections_CheckedChanged);
+>>>>>>> b38693e83442219900c0aca0842c8de587d9cc91
             // 
             // groupBox_initiate
             // 
@@ -370,6 +448,35 @@
             this.numeric_port.Size = new System.Drawing.Size(100, 20);
             this.numeric_port.TabIndex = 2;
             // 
+<<<<<<< HEAD
+=======
+            // IpAddressTB
+            // 
+            this.IpAddressTB.Location = new System.Drawing.Point(488, 552);
+            this.IpAddressTB.Name = "IpAddressTB";
+            this.IpAddressTB.Size = new System.Drawing.Size(131, 20);
+            this.IpAddressTB.TabIndex = 13;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(403, 555);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(79, 13);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "Set IP address:";
+            // 
+            // SetIpBTTN
+            // 
+            this.SetIpBTTN.Location = new System.Drawing.Point(625, 550);
+            this.SetIpBTTN.Name = "SetIpBTTN";
+            this.SetIpBTTN.Size = new System.Drawing.Size(35, 23);
+            this.SetIpBTTN.TabIndex = 15;
+            this.SetIpBTTN.Text = "Ok";
+            this.SetIpBTTN.UseVisualStyleBackColor = true;
+            this.SetIpBTTN.Click += new System.EventHandler(this.SetIpBTTN_Click);
+            // 
+>>>>>>> b38693e83442219900c0aca0842c8de587d9cc91
             // GPSform
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -391,6 +498,10 @@
             this.tabPage_server.ResumeLayout(false);
             this.groupBox_server.ResumeLayout(false);
             this.groupBox_server.PerformLayout();
+<<<<<<< HEAD
+=======
+            ((System.ComponentModel.ISupportInitialize)(this.numeric_choose)).EndInit();
+>>>>>>> b38693e83442219900c0aca0842c8de587d9cc91
             this.groupBox_initiate.ResumeLayout(false);
             this.groupBox_initiate.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_port)).EndInit();
@@ -429,6 +540,9 @@
         private System.Windows.Forms.Label label_connection;
         private System.Windows.Forms.TextBox textBox_input;
         private System.Windows.Forms.GroupBox groupBox_server;
+        private System.Windows.Forms.Button SetIpBTTN;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox IpAddressTB;
     }
 }
 
