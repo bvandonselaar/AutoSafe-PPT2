@@ -39,7 +39,7 @@ namespace PTT2CarGps
         private void AddCars()
         {
             Random r = new Random();
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Car c = new Car(i);
                 Point p = new Point(r.Next(0,300), r.Next(0, 200));
@@ -259,7 +259,6 @@ namespace PTT2CarGps
             if (selectedCar != null)
             {
                 CarInfoLBL.Text = selectedCar.ToString() + Environment.NewLine + "X: " + selectedCar.Path.Position.X + Environment.NewLine + "Y: " + selectedCar.Path.Position.Y;
-                IpAddressTB.Text = selectedCar.IpAddress;
             }
         }
 
@@ -373,7 +372,8 @@ namespace PTT2CarGps
                             );
                     }
 
-                    Canvas.DrawString("ID:" + c.SignatureId, DefaultFont, new SolidBrush(Color.White), pos);
+                    if(!c.IsLost)Canvas.DrawString("ID:" + c.SignatureId, DefaultFont, new SolidBrush(Color.White), pos);
+                    else Canvas.DrawString("ID:" + c.SignatureId + "", DefaultFont, new SolidBrush(Color.Gray), pos);
                 }
             }
             foreach(Car c in CarsInDanger)
@@ -407,7 +407,7 @@ namespace PTT2CarGps
         List<Car> CarsInDanger;
         private void DetectCollision()
         {
-            int MinDistance = 30;
+            int MinDistance = 50;
             CarsInDanger.Clear(); ;
             foreach(Car Car1 in Cars)
             {
@@ -416,12 +416,12 @@ namespace PTT2CarGps
                     if(Car1 != Car2)
                     {
                         Point NextPosCar1 = new Point(
-                                Car1.Position.X + Car1.Path.Direction.X,
-                                Car1.Position.Y + Car1.Path.Direction.Y
+                                Car1.Position.X + Car1.Path.Direction.X * 5,
+                                Car1.Position.Y + Car1.Path.Direction.Y * 5
                             );
                         Point NextPosCar2 = new Point(
-                                Car2.Position.X + Car2.Path.Direction.X,
-                                Car2.Position.Y + Car2.Path.Direction.Y
+                                Car2.Position.X + Car2.Path.Direction.X * 5,
+                                Car2.Position.Y + Car2.Path.Direction.Y * 5
                             );
                         int dX = NextPosCar1.X - NextPosCar2.X;
                         int dY = NextPosCar1.Y - NextPosCar2.Y;
@@ -445,7 +445,10 @@ namespace PTT2CarGps
             }
             foreach(Car c in CarsInDanger)
             {
-                
+                if (!c.IsLost)
+                {
+
+                }
             }
         }
 
@@ -453,7 +456,7 @@ namespace PTT2CarGps
         {
             if(selectedCar != null)
             {
-                selectedCar.IpAddress = IpAddressTB.Text;
+                
             }
         }
     }
