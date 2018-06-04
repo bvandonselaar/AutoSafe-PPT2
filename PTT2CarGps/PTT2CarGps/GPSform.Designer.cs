@@ -36,8 +36,8 @@
             this.tabPage_gps = new System.Windows.Forms.TabPage();
             this.CarInfoLBL = new System.Windows.Forms.Label();
             this.CarsLB = new System.Windows.Forms.ListBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.ClearBTTN = new System.Windows.Forms.Button();
+            this.TestBTTN = new System.Windows.Forms.Button();
             this.CarLocationsPB = new System.Windows.Forms.PictureBox();
             this.settingsGB = new System.Windows.Forms.GroupBox();
             this.closeConnectionBTTN = new System.Windows.Forms.Button();
@@ -61,15 +61,6 @@
             this.label4 = new System.Windows.Forms.Label();
             this.numeric_port = new System.Windows.Forms.NumericUpDown();
             this.groupBox_server = new System.Windows.Forms.GroupBox();
-            this.infoSS.SuspendLayout();
-            this.tabControl_switchview.SuspendLayout();
-            this.tabPage_gps.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.CarLocationsPB)).BeginInit();
-            this.settingsGB.SuspendLayout();
-            this.tabPage_server.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_choose)).BeginInit();
-            this.groupBox_initiate.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_port)).BeginInit();
             this.groupBox_server.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -108,8 +99,8 @@
             // 
             this.tabPage_gps.Controls.Add(this.CarInfoLBL);
             this.tabPage_gps.Controls.Add(this.CarsLB);
-            this.tabPage_gps.Controls.Add(this.button2);
-            this.tabPage_gps.Controls.Add(this.button1);
+            this.tabPage_gps.Controls.Add(this.ClearBTTN);
+            this.tabPage_gps.Controls.Add(this.TestBTTN);
             this.tabPage_gps.Controls.Add(this.CarLocationsPB);
             this.tabPage_gps.Controls.Add(this.settingsGB);
             this.tabPage_gps.Location = new System.Drawing.Point(4, 22);
@@ -136,24 +127,27 @@
             this.CarsLB.Name = "CarsLB";
             this.CarsLB.Size = new System.Drawing.Size(172, 160);
             this.CarsLB.TabIndex = 11;
+            this.CarsLB.SelectedIndexChanged += new System.EventHandler(this.CarsLB_SelectedIndexChanged_1);
             // 
-            // button2
+            // ClearBTTN
             // 
-            this.button2.Location = new System.Drawing.Point(709, 412);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 10;
-            this.button2.Text = "Clear";
-            this.button2.UseVisualStyleBackColor = true;
+            this.ClearBTTN.Location = new System.Drawing.Point(709, 412);
+            this.ClearBTTN.Name = "ClearBTTN";
+            this.ClearBTTN.Size = new System.Drawing.Size(75, 23);
+            this.ClearBTTN.TabIndex = 10;
+            this.ClearBTTN.Text = "Clear";
+            this.ClearBTTN.UseVisualStyleBackColor = true;
+            this.ClearBTTN.Click += new System.EventHandler(this.ClearBTTN_Click);
             // 
-            // button1
+            // TestBTTN
             // 
-            this.button1.Location = new System.Drawing.Point(790, 412);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Test";
-            this.button1.UseVisualStyleBackColor = true;
+            this.TestBTTN.Location = new System.Drawing.Point(790, 412);
+            this.TestBTTN.Name = "TestBTTN";
+            this.TestBTTN.Size = new System.Drawing.Size(75, 23);
+            this.TestBTTN.TabIndex = 9;
+            this.TestBTTN.Text = "Test";
+            this.TestBTTN.UseVisualStyleBackColor = true;
+            this.TestBTTN.Click += new System.EventHandler(this.TestBTTN_Click);
             // 
             // CarLocationsPB
             // 
@@ -163,6 +157,7 @@
             this.CarLocationsPB.Size = new System.Drawing.Size(640, 400);
             this.CarLocationsPB.TabIndex = 8;
             this.CarLocationsPB.TabStop = false;
+            this.CarLocationsPB.Paint += new System.Windows.Forms.PaintEventHandler(this.CarLocationsPB_Paint_1);
             // 
             // settingsGB
             // 
@@ -189,6 +184,7 @@
             this.closeConnectionBTTN.TabIndex = 7;
             this.closeConnectionBTTN.Text = "Close connection";
             this.closeConnectionBTTN.UseVisualStyleBackColor = true;
+            this.closeConnectionBTTN.Click += new System.EventHandler(this.closeConnectionBTTN_Click_1);
             // 
             // SerialComLB
             // 
@@ -206,6 +202,7 @@
             this.ConnectBTTN.TabIndex = 5;
             this.ConnectBTTN.Text = "Connect";
             this.ConnectBTTN.UseVisualStyleBackColor = true;
+            this.ConnectBTTN.Click += new System.EventHandler(this.ConnectBTTN_Click_1);
             // 
             // label2
             // 
@@ -247,6 +244,7 @@
             this.refreshComPortBTTN.TabIndex = 2;
             this.refreshComPortBTTN.Text = "Refresh COM ports";
             this.refreshComPortBTTN.UseVisualStyleBackColor = true;
+            this.refreshComPortBTTN.Click += new System.EventHandler(this.refreshComPortBTTN_Click_1);
             // 
             // comPortCBB
             // 
@@ -417,10 +415,6 @@
             this.settingsGB.ResumeLayout(false);
             this.settingsGB.PerformLayout();
             this.tabPage_server.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_choose)).EndInit();
-            this.groupBox_initiate.ResumeLayout(false);
-            this.groupBox_initiate.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numeric_port)).EndInit();
             this.groupBox_server.ResumeLayout(false);
             this.groupBox_server.PerformLayout();
             this.ResumeLayout(false);
@@ -436,8 +430,8 @@
         private System.Windows.Forms.TabPage tabPage_gps;
         private System.Windows.Forms.Label CarInfoLBL;
         private System.Windows.Forms.ListBox CarsLB;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button ClearBTTN;
+        private System.Windows.Forms.Button TestBTTN;
         private System.Windows.Forms.PictureBox CarLocationsPB;
         private System.Windows.Forms.GroupBox settingsGB;
         private System.Windows.Forms.Button closeConnectionBTTN;
