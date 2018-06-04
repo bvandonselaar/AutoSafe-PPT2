@@ -30,12 +30,8 @@ namespace PTT2CarGps
             InitializeComponent();
             SerialComLB.Items.Add("Not connected");
             Cars = new List<Car>();
-<<<<<<< HEAD
             locClient = new LocationClient();
-=======
             CarsInDanger = new List<Car>();
-            server = new LocationServer();
->>>>>>> b38693e83442219900c0aca0842c8de587d9cc91
             groupBox_server.Enabled = false;
             comPortCBB.DataSource = SerialPort.GetPortNames();
             SerialTimer.Start();
