@@ -11,7 +11,16 @@ namespace PTT2CarGps
     {
         public int SignatureId { get; private set; }
         public Trail Path { get; private set; }
-        public string IpAddress = "";
+        public bool IsLost
+        { get
+            {
+                Point[] locations = Path.GetPoints;
+                if (locations.Length < 2) return true;
+                return
+                    locations[locations.Length - 1].X == locations[locations.Length - 2].X &&
+                    locations[locations.Length - 1].Y == locations[locations.Length - 2].Y;
+            }
+        }
 
         public Car(int SignatureId)
         {
