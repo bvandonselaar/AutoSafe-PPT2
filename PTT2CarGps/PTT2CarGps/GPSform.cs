@@ -30,6 +30,7 @@ namespace PTT2CarGps
             InitializeComponent();
             SerialComLB.Items.Add("Not connected");
             Cars = new List<Car>();
+            CarsInDanger = new List<Car>();
             server = new LocationServer();
             groupBox_server.Enabled = false;
             comPortCBB.DataSource = SerialPort.GetPortNames();
@@ -38,10 +39,10 @@ namespace PTT2CarGps
         private void AddCars()
         {
             Random r = new Random();
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 50; i++)
             {
                 Car c = new Car(i);
-                Point p = new Point(150,100);
+                Point p = new Point(r.Next(0,300), r.Next(0, 200));
                 c.Path.AddPosition(p);
                 Cars.Add(c);
             }
@@ -55,11 +56,23 @@ namespace PTT2CarGps
             for (int i = 0; i < Cars.Count; i++)
             {
                 signatures[i] = i;
-                Point p = new Point
+                Point p = new Point(0, 0);
+                if (!CarsInDanger.Contains(Cars[i])){
+                    p = new Point
+                    {
+                        X = Cars[i].Path.Position.X + Cars[i].Path.Direction.X + r.Next(0, 5) - 2,
+                        Y = Cars[i].Path.Position.Y + Cars[i].Path.Direction.Y + r.Next(0, 5) - 2
+                    };
+                }
+                else
                 {
-                    X = Cars[i].Path.Position.X + Cars[i].Path.Direction.X + r.Next(0, 5) - 2,
-                    Y = Cars[i].Path.Position.Y + Cars[i].Path.Direction.Y + r.Next(0, 5) - 2
-                };
+                    p = new Point
+                    {
+                        X = Cars[i].Path.Position.X + Cars[i].Path.Direction.X / 10 + r.Next(0, 5) - 2,
+                        Y = Cars[i].Path.Position.Y + Cars[i].Path.Direction.Y / 10 + r.Next(0, 5) - 2
+                    };
+                }
+
                 points[i] = p;
             }
             AddPositions(points, signatures);
@@ -214,7 +227,7 @@ namespace PTT2CarGps
                 //Add new car if new signature is found
                 if (!found) Cars.Add(new Car(signatures[i]));
             }
-
+            DetectCollision();
             DrawPositions();
             UpdateUiData();
         }
@@ -243,7 +256,11 @@ namespace PTT2CarGps
             {
                 CarsLB.Items.Remove(c);
             }
-            if(selectedCar != null) CarInfoLBL.Text = selectedCar.ToString() + Environment.NewLine + "X: " + selectedCar.Path.Position.X + Environment.NewLine + "Y: " + selectedCar.Path.Position.Y;
+            if (selectedCar != null)
+            {
+                CarInfoLBL.Text = selectedCar.ToString() + Environment.NewLine + "X: " + selectedCar.Path.Position.X + Environment.NewLine + "Y: " + selectedCar.Path.Position.Y;
+                IpAddressTB.Text = selectedCar.IpAddress;
+            }
         }
 
         private void DrawPositions()
@@ -399,6 +416,20 @@ namespace PTT2CarGps
                     Canvas.DrawString("ID:" + c.SignatureId, DefaultFont, new SolidBrush(Color.White), pos);
                 }
             }
+            foreach(Car c in CarsInDanger)
+            {
+                if (c.Path.GetPositions.Count > 0 && !(c.Path.Position.X == 0 && c.Path.Position.Y == 0))
+                {
+                    Pen pen = new Pen(Color.FromArgb(r.Next(100, 255), r.Next(100, 255), r.Next(100, 255)), 4);
+                    Point pos = c.Path.Position;
+                    pos.Offset(-15, -15);
+                    Canvas.DrawEllipse
+                        (
+                            pen,
+                            new Rectangle(pos, new Size(30, 30))
+                        );
+                }
+            }
 
             Canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear;
         }
@@ -406,6 +437,64 @@ namespace PTT2CarGps
         private void CarsLB_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             selectedCar = (Car)CarsLB.SelectedItem;
+            UpdateUiData();
+        }
+
+        private void SendLocation(Car c)
+        {
+            
+        }
+        List<Car> CarsInDanger;
+        private void DetectCollision()
+        {
+            int MinDistance = 30;
+            CarsInDanger.Clear(); ;
+            foreach(Car Car1 in Cars)
+            {
+                foreach(Car Car2 in Cars)
+                {
+                    if(Car1 != Car2)
+                    {
+                        Point NextPosCar1 = new Point(
+                                Car1.Position.X + Car1.Path.Direction.X,
+                                Car1.Position.Y + Car1.Path.Direction.Y
+                            );
+                        Point NextPosCar2 = new Point(
+                                Car2.Position.X + Car2.Path.Direction.X,
+                                Car2.Position.Y + Car2.Path.Direction.Y
+                            );
+                        int dX = NextPosCar1.X - NextPosCar2.X;
+                        int dY = NextPosCar1.Y - NextPosCar2.Y;
+                        double Distance = Math.Sqrt(Math.Pow(dX, 2) + Math.Pow(dY, 2));
+                        dX = Car1.Position.X - Car2.Position.X;
+                        dY = Car1.Position.Y - Car2.Position.Y;
+                        double OldDistance = Math.Sqrt(Math.Pow(dX, 2) + Math.Pow(dY, 2));
+                        if (Distance < MinDistance && Distance < OldDistance)
+                        {
+                            if (!CarsInDanger.Contains(Car1))
+                            {
+                                CarsInDanger.Add(Car1);
+                            }
+                            if (!CarsInDanger.Contains(Car2))
+                            {
+                                CarsInDanger.Add(Car2);
+                            }
+                        }
+                    }
+                }
+            }
+            foreach(Car c in CarsInDanger)
+            {
+                
+            }
+        }
+
+        private void SetIpBTTN_Click(object sender, EventArgs e)
+        {
+            if(selectedCar != null)
+            {
+                selectedCar.IpAddress = IpAddressTB.Text;
+            }
         }
     }
 }
