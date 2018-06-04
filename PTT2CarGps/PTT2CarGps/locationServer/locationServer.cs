@@ -14,7 +14,7 @@ namespace PTT2CarGps.locationServer
         private NetworkStream tcpStream;
         private System.Windows.Forms.Timer timer;
         public int currentTalkIndex { get; private set; } = 0;
-      
+
         public List<ESP> connectedESPs { get; private set; }
         public string IP { get; private set; }
         public int Port { get; private set; }
@@ -24,31 +24,41 @@ namespace PTT2CarGps.locationServer
             socketListener = null;
             connectedESPs = new List<ESP>();
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 1000;
+            timer.Interval = 200;
             timer.Tick += new EventHandler(TimerEventProcessor);
         }
 
-        private void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
+        private async void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
         {
-            if(socketListener.Pending())
+            if (socketListener.Pending())
             {
                 AcceptConnection();
             }
 
             if (currentTalkIndex < connectedESPs.Count)
             {
-                StartTalkWith(currentTalkIndex);
-                currentTalkIndex++;
-                if (currentTalkIndex > connectedESPs.Count - 1)
+                try
                 {
-                    currentTalkIndex = 0;
+                    StartTalkWith(currentTalkIndex);
+                    await Receive();
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    currentTalkIndex = -1;
+                }
+                catch (ObjectDisposedException)
+                {
+                    currentTalkIndex = -1;
+                }
+                finally
+                {
+                    currentTalkIndex++;
+                    if (currentTalkIndex > connectedESPs.Count - 1)
+                    {
+                        currentTalkIndex = 0;
+                    }
                 }
             }
-            
-            
-
-
-
         }
 
         //Server stappenplan
@@ -80,24 +90,25 @@ namespace PTT2CarGps.locationServer
         {
             currentTalkIndex = index;
             tcpStream = connectedESPs[currentTalkIndex].Client.GetStream();
+
         }
         //---------------------------------------------------------------------------------------
 
-        
+
         public void Send(string message)
         {
             byte[] data = Encoding.ASCII.GetBytes(message);
             tcpStream.Write(data, 0, data.Length);
         }
 
-        public void SendLocation(byte id, UInt16 x, UInt16 y)
+        public void SendLocation(UInt16 x, UInt16 y)
         {
             byte xHigh = (byte)(0xFF & (x >> 8));
             byte xLow = (byte)(0xFF & x);
 
             byte yHigh = (byte)(0xFF & (y >> 8));
             byte yLow = (byte)(0xFF & y);
-            byte[] payload = { id, xHigh, xLow, yHigh, yLow };
+            byte[] payload = { xHigh, xLow, yHigh, yLow };
 
             Packet p = new Packet();
             byte[] message = p.Serialize(0xA2, payload);
@@ -106,7 +117,7 @@ namespace PTT2CarGps.locationServer
 
         public void setSearchingMode(bool mode)
         {
-            if(mode)
+            if (mode)
             {
                 timer.Start();
             }
@@ -119,11 +130,21 @@ namespace PTT2CarGps.locationServer
         int count = 0;
         public async Task<byte[]> Receive()
         {
-            byte[] bytes = new byte[30];
+            byte[] bytes = new byte[20];
             if (tcpStream.CanRead)
             {
                 await tcpStream.ReadAsync(bytes, 0, bytes.Length);
+                if (bytes[0] == 0x0E && bytes[1] == 0xE0)
+                {
+                    int id = (bytes[5] << 8) | bytes[6];
+                    int x = 0;
+                    int y = 0;
 
+                    x = connectedESPs[currentTalkIndex].X;
+                    y = connectedESPs[currentTalkIndex].Y;
+
+                    SendLocation((UInt16)x, (UInt16)y);
+                }
                 foreach (byte b in bytes)
                 {
                     if (b != 0)
@@ -136,10 +157,13 @@ namespace PTT2CarGps.locationServer
                 if (count > 5)
                 {
                     tcpStream.Close();
-                    connectedESPs.RemoveRange(currentTalkIndex, 1);
+                    connectedESPs.RemoveAt(currentTalkIndex);
+                    currentTalkIndex = connectedESPs.Count;
                 }
             }
-            return bytes; 
+            return bytes;
         }
+
+
     }
 }

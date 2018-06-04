@@ -20,6 +20,9 @@ namespace ProtocolAS
      * Cmd - 5 bits
      * The number identifying the command within the category (see Commands). A receiver must ignore a packet if it doesn’t recognize the command.
      * 
+     * Identifier - 16 bits
+     * Identifier of the intended recipient of the packet.
+     * 
      * Payload - n × 16 bits
      * Arbitrary number of data bytes carried by the packet. This must be interpreted depending on the command.
      * 
@@ -33,6 +36,9 @@ namespace ProtocolAS
         public byte Length { get; private set; }
         public byte Cat { get; private set; }
         public byte Cmd { get; private set; }
+        public byte Identifier1 { get; private set; }
+        public byte Identifier2 { get; private set; }
+        public UInt16 Identifier { get; private set; }
         public byte[] Payload { get; private set; }
         public UInt16 Checksum { get; private set; }
         public UInt16 ControlChecksum { get; private set; }
@@ -66,14 +72,16 @@ namespace ProtocolAS
                         {
                             Cat = (byte)(0b11100000 & (message[3])); //zet categorie
                             Cmd = (byte)(0b00011111 & (message[3])); //zet bericht
-
-                            if (Length > 0x06)
+                            Identifier1 = message[4];
+                            Identifier2 = message[5];
+                            Identifier = (UInt16)((message[5] << 8) | message[4]);
+                            if (Length > 0x08)
                             {
                                 //maakt payloadarray aan
                                 Payload = new byte[100];
-                                for (int i = 4; i < Length; i++)
+                                for (int i = 6; i < Length; i++)
                                 {
-                                    Payload[i - 4] = message[i];
+                                    Payload[i - 6] = message[i];
                                 }
                             }
                             return 1;
@@ -93,7 +101,6 @@ namespace ProtocolAS
             {
                 return -1;
             }
-
         }
 
         /// <summary>

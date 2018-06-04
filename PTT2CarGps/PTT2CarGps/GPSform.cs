@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
 using System.IO;
-using PTT2CarGps.locationServer;
+using PTT2CarGps.locationClient;
 
 namespace PTT2CarGps
 {
     public partial class GPSform : Form
     {
         SerialPort port;
-        LocationServer server;
+        LocationClient locClient;
         public List<Car> Cars;
         byte[] Protocol = new byte[100];
         int ProtocolByteCount = 0;
@@ -30,8 +30,12 @@ namespace PTT2CarGps
             InitializeComponent();
             SerialComLB.Items.Add("Not connected");
             Cars = new List<Car>();
+<<<<<<< HEAD
+            locClient = new LocationClient();
+=======
             CarsInDanger = new List<Car>();
             server = new LocationServer();
+>>>>>>> b38693e83442219900c0aca0842c8de587d9cc91
             groupBox_server.Enabled = false;
             comPortCBB.DataSource = SerialPort.GetPortNames();
             SerialTimer.Start();
@@ -267,16 +271,16 @@ namespace PTT2CarGps
             CarLocationsPB.Invalidate();
         }
 
-        private void button_initiate_Click(object sender, EventArgs e)
+        private async void button_initiate_Click(object sender, EventArgs e)
         {
             string ip = textBox_ip.Text;
             int port = (int)numeric_port.Value;
             try
             {
-                server.InitiateListener(ip, port);
+                await locClient.Connect(ip, port);
+                ReceiveMessages();
                 groupBox_initiate.Enabled = false;
                 groupBox_server.Enabled = true;
-                label_connection.Text = "Server: " + server.IP + "\nConnected To: ";
             }
             catch(FormatException)
             {
@@ -288,60 +292,20 @@ namespace PTT2CarGps
             }
         }
 
-        private async void checkBox_acceptConnections_CheckedChanged(object sender, EventArgs e)
-        {
-            server.setSearchingMode(checkBox_acceptConnections.Checked);
-            if (server.connectedESPs.Count > 0)
-            {
-                if (checkBox_acceptConnections.Checked == true) { await ReceiveMessages(); }
-            }
-        }
-
-        private async void button_choose_Click(object sender, EventArgs e)
-        {
-            bool loop = true;
-            server.StartTalkWith((int)numeric_choose.Value);
-            label_connection.Text = "Server: " + server.IP + "\nConnected To: " + server.connectedESPs[(int)numeric_choose.Value].Ip.ToString();
-            while (loop)
-            {
-                try
-                {
-                    byte[] bytes = await server.Receive();
-                    textBox_input.AppendText("Incoming: ");
-                    foreach (byte b in bytes)
-                    {
-                        textBox_input.AppendText(b.ToString());
-                    }
-                    textBox_input.AppendText("\n");
-                }
-                catch (ObjectDisposedException)
-                {
-                    loop = false;
-                    MessageBox.Show("Disconnected");
-                }
-                catch(NullReferenceException)
-                {
-                    textBox_input.AppendText("No Connection\n");
-                }
-            }
-        }
-
         private async Task ReceiveMessages()
         {
             bool loop = true;
             while (loop)
             {
-
                 try
                 {
-                    label_connection.Text = "Server: " + server.IP + "\nConnected To: " + server.connectedESPs[server.currentTalkIndex].Ip.ToString();
                     
-                    byte[] bytes = await server.Receive();
-                    textBox_input.AppendText("Incoming: ");
+                    await locClient.Read();
+                    textBox_input.AppendText("Incoming: " + locClient.Bytes[0].ToString());
                     
-                    foreach (byte b in bytes)
+                    for (int i = 1; i < locClient.Bytes.Length; i++)
                     {
-                            textBox_input.AppendText(b.ToString());
+                        textBox_input.AppendText(" - " + locClient.Bytes[i].ToString());
                     }
                     textBox_input.AppendText("\n");
                 }

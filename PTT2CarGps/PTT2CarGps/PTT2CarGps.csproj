@@ -52,8 +52,9 @@
     <Compile Include="GPSform.Designer.cs">
       <DependentUpon>GPSform.cs</DependentUpon>
     </Compile>
+    <Compile Include="locationClient\LocationClient.cs" />
     <Compile Include="locationServer\ESP.cs" />
-    <Compile Include="locationServer\locationServer.cs" />
+    <Compile Include="locationServer\LocationServer.cs" />
     <Compile Include="LocationTime.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="Program.cs" />
