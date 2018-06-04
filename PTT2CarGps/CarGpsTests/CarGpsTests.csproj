@@ -50,8 +50,10 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CarGpsTest.cs" />
+    <Compile Include="CarTestMethodes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrailTestMethodes.cs" />
+    <Compile Include="LocationTimeTestMethodes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

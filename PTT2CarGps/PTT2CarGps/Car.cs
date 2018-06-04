@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace PTT2CarGps
 {
@@ -15,6 +16,17 @@ namespace PTT2CarGps
         {
             this.SignatureId = SignatureId;
             Path = new Trail();
+        }
+        public void AddPosition(Point position)
+        {
+            Path.AddPosition(position);
+        }
+        public Point Position
+        {
+            get
+            {
+                return Path.Position;
+            }
         }
         public override string ToString()
         {

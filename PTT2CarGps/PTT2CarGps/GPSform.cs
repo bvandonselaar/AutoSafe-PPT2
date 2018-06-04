@@ -57,8 +57,8 @@ namespace PTT2CarGps
                 signatures[i] = i;
                 Point p = new Point
                 {
-                    X = Cars[i].Path.Position.X + Cars[i].Path.Speed.X + r.Next(0, 5) - 2,
-                    Y = Cars[i].Path.Position.Y + Cars[i].Path.Speed.Y + r.Next(0, 5) - 2
+                    X = Cars[i].Path.Position.X + Cars[i].Path.Direction.X + r.Next(0, 5) - 2,
+                    Y = Cars[i].Path.Position.Y + Cars[i].Path.Direction.Y + r.Next(0, 5) - 2
                 };
                 points[i] = p;
             }
@@ -207,7 +207,7 @@ namespace PTT2CarGps
                     {
                         //Add position
                         found = true;
-                        c.Path.AddPosition(positions[i]);
+                        c.AddPosition(positions[i]);
                         break;
                     }
                 }
@@ -389,8 +389,8 @@ namespace PTT2CarGps
                                 c.Path.GetPositions[c.Path.GetPositions.Count - 1].Location,
                                 new Point
                                 (
-                                    c.Path.GetPositions[c.Path.GetPositions.Count - 1].Location.X + c.Path.Speed.X,
-                                    c.Path.GetPositions[c.Path.GetPositions.Count - 1].Location.Y + c.Path.Speed.Y
+                                    c.Path.GetPositions[c.Path.GetPositions.Count - 1].Location.X + c.Path.Direction.X,
+                                    c.Path.GetPositions[c.Path.GetPositions.Count - 1].Location.Y + c.Path.Direction.Y
                                 )
                             );
                     }
