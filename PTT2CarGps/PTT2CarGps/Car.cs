@@ -11,6 +11,7 @@ namespace PTT2CarGps
     {
         public int SignatureId { get; private set; }
         public Trail Path { get; private set; }
+        public string IpAddress = "";
 
         public Car(int SignatureId)
         {
