@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO.Ports;
 using System.IO;
 using PTT2CarGps.locationClient;
+using PTT2CarGps.Messages;
 
 namespace PTT2CarGps
 {
@@ -31,7 +32,6 @@ namespace PTT2CarGps
             SerialComLB.Items.Add("Not connected");
             Cars = new List<Car>();
             locClient = new LocationClient();
-            CarsInDanger = new List<Car>();
             groupBox_server.Enabled = false;
             comPortCBB.DataSource = SerialPort.GetPortNames();
             SerialTimer.Start();
@@ -39,7 +39,7 @@ namespace PTT2CarGps
         private void AddCars()
         {
             Random r = new Random();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 50; i++)
             {
                 Car c = new Car(i);
                 Point p = new Point(r.Next(0,300), r.Next(0, 200));
@@ -57,21 +57,11 @@ namespace PTT2CarGps
             {
                 signatures[i] = i;
                 Point p = new Point(0, 0);
-                if (!CarsInDanger.Contains(Cars[i])){
-                    p = new Point
-                    {
-                        X = Cars[i].Path.Position.X + Cars[i].Path.Direction.X + r.Next(0, 5) - 2,
-                        Y = Cars[i].Path.Position.Y + Cars[i].Path.Direction.Y + r.Next(0, 5) - 2
-                    };
-                }
-                else
+                p = new Point
                 {
-                    p = new Point
-                    {
-                        X = Cars[i].Path.Position.X + Cars[i].Path.Direction.X / 10 + r.Next(0, 5) - 2,
-                        Y = Cars[i].Path.Position.Y + Cars[i].Path.Direction.Y / 10 + r.Next(0, 5) - 2
-                    };
-                }
+                    X = Cars[i].Path.Position.X + Cars[i].Path.Direction.X + r.Next(0, 5) - 2,
+                    Y = Cars[i].Path.Position.Y + Cars[i].Path.Direction.Y + r.Next(0, 5) - 2
+                };
 
                 points[i] = p;
             }
@@ -346,49 +336,7 @@ namespace PTT2CarGps
             Random r = new Random(10);
             foreach (Car c in Cars)
             {
-                if (c.Path.GetPositions.Count > 0 && !(c.Path.Position.X == 0 && c.Path.Position.Y == 0))
-                {
-                    Pen pen = new Pen(Color.FromArgb(r.Next(100, 255), r.Next(100, 255), r.Next(100, 255)));
-                    Point pos = c.Path.Position;
-                    pos.Offset(-15, -15);
-                    Canvas.DrawEllipse
-                        (
-                            pen,
-                            new Rectangle(pos, new Size(30, 30))
-                        );
-
-                    if (c.Path.GetPoints.Length > 1)
-                    {
-                        Canvas.DrawLines(pen, c.Path.GetPoints);
-                        Canvas.DrawLine
-                            (
-                                new Pen(Color.White, 2),
-                                c.Path.GetPositions[c.Path.GetPositions.Count - 1].Location,
-                                new Point
-                                (
-                                    c.Path.GetPositions[c.Path.GetPositions.Count - 1].Location.X + c.Path.Direction.X,
-                                    c.Path.GetPositions[c.Path.GetPositions.Count - 1].Location.Y + c.Path.Direction.Y
-                                )
-                            );
-                    }
-
-                    if(!c.IsLost)Canvas.DrawString("ID:" + c.SignatureId, DefaultFont, new SolidBrush(Color.White), pos);
-                    else Canvas.DrawString("ID:" + c.SignatureId + "", DefaultFont, new SolidBrush(Color.Gray), pos);
-                }
-            }
-            foreach(Car c in CarsInDanger)
-            {
-                if (c.Path.GetPositions.Count > 0 && !(c.Path.Position.X == 0 && c.Path.Position.Y == 0))
-                {
-                    Pen pen = new Pen(Color.FromArgb(r.Next(100, 255), r.Next(100, 255), r.Next(100, 255)), 4);
-                    Point pos = c.Path.Position;
-                    pos.Offset(-15, -15);
-                    Canvas.DrawEllipse
-                        (
-                            pen,
-                            new Rectangle(pos, new Size(30, 30))
-                        );
-                }
+                c.Draw(Canvas, Color.FromArgb(r.Next(100, 255), r.Next(100, 255), r.Next(100, 255)));
             }
 
             Canvas.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear;
@@ -404,11 +352,13 @@ namespace PTT2CarGps
         {
             
         }
-        List<Car> CarsInDanger;
+        
         private void DetectCollision()
         {
-            int MinDistance = 50;
-            CarsInDanger.Clear(); ;
+            List<Car> CarsBrake = new List<Car>();
+            List<Car> CarsEmergencyBrake = new List<Car>();
+            int MinDistanceBrake = 50;
+            int MinDistanceEmergencyBrake = 20;
             foreach(Car Car1 in Cars)
             {
                 foreach(Car Car2 in Cars)
@@ -429,25 +379,45 @@ namespace PTT2CarGps
                         dX = Car1.Position.X - Car2.Position.X;
                         dY = Car1.Position.Y - Car2.Position.Y;
                         double OldDistance = Math.Sqrt(Math.Pow(dX, 2) + Math.Pow(dY, 2));
-                        if (Distance < MinDistance && Distance < OldDistance)
+                        if (Distance < MinDistanceBrake && Distance > MinDistanceEmergencyBrake && Distance < OldDistance)
                         {
-                            if (!CarsInDanger.Contains(Car1))
+                            if (!CarsBrake.Contains(Car1))
                             {
-                                CarsInDanger.Add(Car1);
+                                CarsBrake.Add(Car1);
                             }
-                            if (!CarsInDanger.Contains(Car2))
+                            if (!CarsBrake.Contains(Car2))
                             {
-                                CarsInDanger.Add(Car2);
+                                CarsBrake.Add(Car2);
+                            }
+                        }
+                        else if(Distance < MinDistanceEmergencyBrake && Distance < OldDistance)
+                        {
+                            if (!CarsEmergencyBrake.Contains(Car1))
+                            {
+                                CarsEmergencyBrake.Add(Car1);
+                            }
+                            if (!CarsEmergencyBrake.Contains(Car2))
+                            {
+                                CarsEmergencyBrake.Add(Car2);
                             }
                         }
                     }
                 }
             }
-            foreach(Car c in CarsInDanger)
+            foreach(Car c in CarsBrake)
             {
                 if (!c.IsLost)
                 {
-
+                    BrakeWarning bw = new BrakeWarning(DateTime.Now, c.Position);
+                    c.SendMessage(bw);
+                }
+            }
+            foreach (Car c in CarsEmergencyBrake)
+            {
+                if (!c.IsLost)
+                {
+                    EmergencyBrakeWarning bw = new EmergencyBrakeWarning(DateTime.Now, c.Position);
+                    c.SendMessage(bw);
                 }
             }
         }

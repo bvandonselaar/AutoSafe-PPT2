@@ -52,16 +52,19 @@
     <Compile Include="GPSform.Designer.cs">
       <DependentUpon>GPSform.cs</DependentUpon>
     </Compile>
+    <Compile Include="IDrawable.cs" />
     <Compile Include="locationClient\LocationClient.cs" />
     <Compile Include="locationServer\ESP.cs" />
     <Compile Include="locationServer\LocationServer.cs" />
     <Compile Include="LocationTime.cs" />
+    <Compile Include="Messages\EmergencyBrakeWarning.cs" />
+    <Compile Include="Messages\Message.cs" />
+    <Compile Include="Messages\BrakeWarning.cs" />
     <Compile Include="Packet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Trail.cs" />
     <Compile Include="Unpack.cs" />
-    <Compile Include="Warning.cs" />
     <EmbeddedResource Include="GPSform.resx">
       <DependentUpon>GPSform.cs</DependentUpon>
     </EmbeddedResource>

@@ -7,7 +7,7 @@ using System.Drawing;
 
 namespace PTT2CarGps
 {
-    public class Trail
+    public class Trail : IDrawable
     {
         private List<LocationTime> Positions;
         public int MaxPositions { get; private set; }
@@ -107,6 +107,25 @@ namespace PTT2CarGps
             }
 
             return new Point(X / Count, Y / Count);
+        }
+
+        public void Draw(Graphics Canvas, Color Color)
+        {
+            if (GetPoints.Length > 1)
+            {
+                Pen pen = new Pen(Color);
+                Canvas.DrawLines(pen, GetPoints);
+                Canvas.DrawLine
+                    (
+                        new Pen(Color.White, 2),
+                        Positions[Positions.Count - 1].Location,
+                        new Point
+                        (
+                            Positions[Positions.Count - 1].Location.X + Direction.X,
+                            Positions[Positions.Count - 1].Location.Y + Direction.Y
+                        )
+                    );
+            }
         }
     }
 }
