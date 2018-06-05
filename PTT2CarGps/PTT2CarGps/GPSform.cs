@@ -400,10 +400,6 @@ namespace PTT2CarGps
             UpdateUiData();
         }
 
-        private void SendLocation(Car c)
-        {
-            
-        }
         List<Car> CarsInDanger;
         private void DetectCollision()
         {
@@ -447,7 +443,7 @@ namespace PTT2CarGps
             {
                 if (!c.IsLost)
                 {
-
+                    locClient.SendWarning((byte)c.SignatureId);
                 }
             }
         }
