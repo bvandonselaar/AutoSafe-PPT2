@@ -348,11 +348,15 @@ namespace PTT2CarGps
             UpdateUiData();
         }
 
+<<<<<<< HEAD
         private void SendLocation(Car c)
         {
             
         }
         
+=======
+        List<Car> CarsInDanger;
+>>>>>>> 5f8619b0ba50824be786313f030443b4bca5d7b3
         private void DetectCollision()
         {
             List<Car> CarsBrake = new List<Car>();
@@ -408,6 +412,7 @@ namespace PTT2CarGps
             {
                 if (!c.IsLost)
                 {
+<<<<<<< HEAD
                     BrakeWarning bw = new BrakeWarning(DateTime.Now, c.Position);
                     c.SendMessage(bw);
                 }
@@ -418,6 +423,9 @@ namespace PTT2CarGps
                 {
                     EmergencyBrakeWarning bw = new EmergencyBrakeWarning(DateTime.Now, c.Position);
                     c.SendMessage(bw);
+=======
+                    locClient.SendWarning((byte)c.SignatureId);
+>>>>>>> 5f8619b0ba50824be786313f030443b4bca5d7b3
                 }
             }
         }

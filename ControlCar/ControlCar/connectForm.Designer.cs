@@ -47,11 +47,14 @@
             this.button_brake = new System.Windows.Forms.Button();
             this.textBox_console = new System.Windows.Forms.TextBox();
             this.label_status = new System.Windows.Forms.Label();
+            this.numeric_id = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_port)).BeginInit();
             this.groupBox_connect.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.group_control.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_speed)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numeric_id)).BeginInit();
             this.SuspendLayout();
             // 
             // textBox_ip
@@ -169,6 +172,8 @@
             // 
             this.group_control.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.group_control.Controls.Add(this.label4);
+            this.group_control.Controls.Add(this.numeric_id);
             this.group_control.Controls.Add(this.button_disconnect);
             this.group_control.Controls.Add(this.label3);
             this.group_control.Controls.Add(this.numeric_speed);
@@ -256,6 +261,22 @@
             this.label_status.Size = new System.Drawing.Size(0, 13);
             this.label_status.TabIndex = 15;
             // 
+            // numeric_id
+            // 
+            this.numeric_id.Location = new System.Drawing.Point(37, 251);
+            this.numeric_id.Name = "numeric_id";
+            this.numeric_id.Size = new System.Drawing.Size(56, 20);
+            this.numeric_id.TabIndex = 16;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 253);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(19, 13);
+            this.label4.TabIndex = 17;
+            this.label4.Text = "Id:";
+            // 
             // connectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -276,6 +297,7 @@
             this.group_control.ResumeLayout(false);
             this.group_control.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_speed)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numeric_id)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -302,6 +324,8 @@
         private System.Windows.Forms.NumericUpDown numeric_speed;
         private System.Windows.Forms.Button button_disconnect;
         private System.Windows.Forms.Label label_status;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown numeric_id;
     }
 }
 

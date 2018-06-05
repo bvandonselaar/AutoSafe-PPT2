@@ -75,7 +75,8 @@ namespace ControlCar
         private void button_forward_Click(object sender, EventArgs e)
         {
             byte speed = (byte)numeric_speed.Value;
-            if(carController.SendSpeed(2, speed) == 1)
+            byte id = (byte)numeric_id.Value;
+            if(carController.SendSpeed(2, id, speed) == 1)
             {
                 printToTextbox("Forward sent");
             }
@@ -88,7 +89,8 @@ namespace ControlCar
         private void button_right_Click(object sender, EventArgs e)
         {
             byte speed = (byte)numeric_speed.Value;
-            if (carController.SendSpeed(5, speed) == 1)
+            byte id = (byte)numeric_id.Value;
+            if (carController.SendSpeed(5, id, speed) == 1)
             {
                 printToTextbox("Right sent");
             }
@@ -101,7 +103,8 @@ namespace ControlCar
         private void button_left_Click(object sender, EventArgs e)
         {
             byte speed = (byte)numeric_speed.Value;
-            if (carController.SendSpeed(4, speed) == 1)
+            byte id = (byte)numeric_id.Value;
+            if (carController.SendSpeed(4, id, speed) == 1)
             {
                 printToTextbox("Left sent");
             }
@@ -114,7 +117,8 @@ namespace ControlCar
         private void button_backward_Click(object sender, EventArgs e)
         {
             byte speed = (byte)numeric_speed.Value;
-            if (carController.SendSpeed(3, speed) == 1)
+            byte id = (byte)numeric_id.Value;
+            if (carController.SendSpeed(3, id, speed) == 1)
             {
                 printToTextbox("Backward sent");
             }
@@ -127,7 +131,8 @@ namespace ControlCar
         private void button_brake_Click(object sender, EventArgs e)
         {
             byte speed = (byte)numeric_speed.Value;
-            if (carController.SendSpeed(7, speed) == 1)
+            byte id = (byte)numeric_id.Value;
+            if (carController.SendSpeed(7, id, speed) == 1)
             {
                 printToTextbox("Brake sent");
             }
@@ -140,7 +145,8 @@ namespace ControlCar
         private void button_emergencyBrake_Click(object sender, EventArgs e)
         {
             byte speed = (byte)numeric_speed.Value;
-            if (carController.SendSpeed(1, speed) == 1)
+            byte id = (byte)numeric_id.Value;
+            if (carController.SendSpeed(1, id, speed) == 1)
             {
                 printToTextbox("Emergency brake sent");
             }
