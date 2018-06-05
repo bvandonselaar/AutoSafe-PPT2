@@ -81,9 +81,9 @@ namespace PTT2CarGps
         {
             if(message is EmergencyBrakeWarning)
             {
-                foreach (Message m in Messages)
+                foreach(Message m in Messages)
                 {
-                    if(m is EmergencyBrakeWarning && DateTime.Now.Subtract(m.TimeSend).Seconds < 3)
+                    if (m is EmergencyBrakeWarning && DateTime.Now.Subtract(m.TimeSend).Seconds < 3)
                     {
                         return;
                     }
@@ -91,7 +91,7 @@ namespace PTT2CarGps
             }
             else
             {
-                foreach (Message m in Messages)
+                foreach(Message m in Messages)
                 {
                     if (DateTime.Now.Subtract(m.TimeSend).Seconds < 1)
                     {

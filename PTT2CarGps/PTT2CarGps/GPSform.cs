@@ -61,22 +61,25 @@ namespace PTT2CarGps
                 Point p;
                 if (CarsBrake.Contains(Cars[i]))
                 {
+                    //Car brake
                     p = new Point
                     {
-                        X = Cars[i].Path.Position.X + Cars[i].Path.Direction.X / 2 + r.Next(0, 5) - 2,
-                        Y = Cars[i].Path.Position.Y + Cars[i].Path.Direction.Y / 2 + r.Next(0, 5) - 2
+                        X = Cars[i].Path.Position.X + (int)(Cars[i].Path.Direction.X * 0.8) + r.Next(0, 5) - 2,
+                        Y = Cars[i].Path.Position.Y + (int)(Cars[i].Path.Direction.Y * 0.8) + r.Next(0, 5) - 2
                     };
                 }
                 else if (CarsEmergencyBrake.Contains(Cars[i]))
                 {
+                    //Car emergencybrake
                     p = new Point
                     {
-                        X = Cars[i].Path.Position.X + Cars[i].Path.Direction.X / 10 + r.Next(0, 5) - 2,
-                        Y = Cars[i].Path.Position.Y + Cars[i].Path.Direction.Y / 10 + r.Next(0, 5) - 2
+                        X = Cars[i].Path.Position.X + (int)(Cars[i].Path.Direction.X * 0.5) + r.Next(0, 5) - 2,
+                        Y = Cars[i].Path.Position.Y + (int)(Cars[i].Path.Direction.Y * 0.5) + r.Next(0, 5) - 2
                     };
                 }
                 else
                 {
+                    //Car keeps driving randomly
                     p = new Point
                     {
                         X = Cars[i].Path.Position.X + Cars[i].Path.Direction.X + r.Next(0, 11) - 5,
