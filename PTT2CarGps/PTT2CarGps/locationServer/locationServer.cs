@@ -111,7 +111,7 @@ namespace PTT2CarGps.locationServer
             byte[] payload = { xHigh, xLow, yHigh, yLow };
 
             Packet p = new Packet();
-            byte[] message = p.Serialize(0xA2, payload);
+            byte[] message = p.Serialize(0xA2, 1, payload);
             tcpStream.Write(message, 0, message.Length);
         }
 

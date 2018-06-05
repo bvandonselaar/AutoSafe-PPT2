@@ -32,6 +32,8 @@ namespace PTT2CarGps
             SerialComLB.Items.Add("Not connected");
             Cars = new List<Car>();
             locClient = new LocationClient();
+            CarsBrake = new List<Car>();
+            CarsEmergencyBrake = new List<Car>();
             groupBox_server.Enabled = false;
             comPortCBB.DataSource = SerialPort.GetPortNames();
             SerialTimer.Start();
@@ -39,7 +41,7 @@ namespace PTT2CarGps
         private void AddCars()
         {
             Random r = new Random();
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 5; i++)
             {
                 Car c = new Car(i);
                 Point p = new Point(r.Next(0,300), r.Next(0, 200));
@@ -47,7 +49,7 @@ namespace PTT2CarGps
                 Cars.Add(c);
             }
         }
-        private void TestTrailDrawing()
+        private void TestSimulation()
         {
             if (Cars.Count == 0) AddCars();
             Random r = new Random();
@@ -56,13 +58,47 @@ namespace PTT2CarGps
             for (int i = 0; i < Cars.Count; i++)
             {
                 signatures[i] = i;
-                Point p = new Point(0, 0);
-                p = new Point
+                Point p;
+                if (CarsBrake.Contains(Cars[i]))
                 {
-                    X = Cars[i].Path.Position.X + Cars[i].Path.Direction.X + r.Next(0, 5) - 2,
-                    Y = Cars[i].Path.Position.Y + Cars[i].Path.Direction.Y + r.Next(0, 5) - 2
-                };
-
+                    p = new Point
+                    {
+                        X = Cars[i].Path.Position.X + Cars[i].Path.Direction.X / 2 + r.Next(0, 5) - 2,
+                        Y = Cars[i].Path.Position.Y + Cars[i].Path.Direction.Y / 2 + r.Next(0, 5) - 2
+                    };
+                }
+                else if (CarsEmergencyBrake.Contains(Cars[i]))
+                {
+                    p = new Point
+                    {
+                        X = Cars[i].Path.Position.X + Cars[i].Path.Direction.X / 10 + r.Next(0, 5) - 2,
+                        Y = Cars[i].Path.Position.Y + Cars[i].Path.Direction.Y / 10 + r.Next(0, 5) - 2
+                    };
+                }
+                else
+                {
+                    p = new Point
+                    {
+                        X = Cars[i].Path.Position.X + Cars[i].Path.Direction.X + r.Next(0, 11) - 5,
+                        Y = Cars[i].Path.Position.Y + Cars[i].Path.Direction.Y + r.Next(0, 11) - 5
+                    };
+                    if (Cars[i].Position.X > 280)
+                    {
+                        p.X -= 3;
+                    }
+                    else if (Cars[i].Position.X < 20)
+                    {
+                        p.X += 3;
+                    }
+                    if (Cars[i].Position.Y > 180)
+                    {
+                        p.Y -= 3;
+                    }
+                    else if (Cars[i].Position.Y < 20)
+                    {
+                        p.Y += 3;
+                    }
+                }
                 points[i] = p;
             }
             AddPositions(points, signatures);
@@ -320,7 +356,7 @@ namespace PTT2CarGps
 
         private void TestBTTN_Click(object sender, EventArgs e)
         {
-            TestTrailDrawing();
+            TestSimulation();
         }
 
         private void closeConnectionBTTN_Click_1(object sender, EventArgs e)
@@ -347,60 +383,88 @@ namespace PTT2CarGps
             selectedCar = (Car)CarsLB.SelectedItem;
             UpdateUiData();
         }
-
-<<<<<<< HEAD
-        private void SendLocation(Car c)
-        {
-            
-        }
-        
-=======
-        List<Car> CarsInDanger;
->>>>>>> 5f8619b0ba50824be786313f030443b4bca5d7b3
+        List<Car> CarsBrake;
+        List<Car> CarsEmergencyBrake;
         private void DetectCollision()
         {
-            List<Car> CarsBrake = new List<Car>();
-            List<Car> CarsEmergencyBrake = new List<Car>();
-            int MinDistanceBrake = 50;
-            int MinDistanceEmergencyBrake = 20;
+            CarsBrake.Clear();
+            CarsEmergencyBrake.Clear();
+            int MinDistanceBrake = 60;
+            int MinDistanceEmergencyBrake = 30;
             foreach(Car Car1 in Cars)
             {
                 foreach(Car Car2 in Cars)
                 {
                     if(Car1 != Car2)
                     {
+                        //------------------------------------------------
+                        //Predict next car locations
+                        //------------------------------------------------
                         Point NextPosCar1 = new Point(
-                                Car1.Position.X + Car1.Path.Direction.X * 5,
-                                Car1.Position.Y + Car1.Path.Direction.Y * 5
+                                Car1.Position.X + Car1.Path.Direction.X * 2,
+                                Car1.Position.Y + Car1.Path.Direction.Y * 2
                             );
                         Point NextPosCar2 = new Point(
-                                Car2.Position.X + Car2.Path.Direction.X * 5,
-                                Car2.Position.Y + Car2.Path.Direction.Y * 5
+                                Car2.Position.X + Car2.Path.Direction.X * 2,
+                                Car2.Position.Y + Car2.Path.Direction.Y * 2
                             );
+
+                        //------------------------------------------------
+                        //Check if distance is decreasing
+                        //------------------------------------------------
+                        //New Distance
+                        //------------------------------------------------
                         int dX = NextPosCar1.X - NextPosCar2.X;
                         int dY = NextPosCar1.Y - NextPosCar2.Y;
-                        double Distance = Math.Sqrt(Math.Pow(dX, 2) + Math.Pow(dY, 2));
+                        double NewDistance = Math.Sqrt(Math.Pow(dX, 2) + Math.Pow(dY, 2));
+                        //------------------------------------------------
+                        //Old Distance
+                        //------------------------------------------------
                         dX = Car1.Position.X - Car2.Position.X;
                         dY = Car1.Position.Y - Car2.Position.Y;
                         double OldDistance = Math.Sqrt(Math.Pow(dX, 2) + Math.Pow(dY, 2));
-                        if (Distance < MinDistanceBrake && Distance > MinDistanceEmergencyBrake && Distance < OldDistance)
+                        //------------------------------------------------
+                        //Comparing
+                        //------------------------------------------------
+                        bool Decreasing = NewDistance < OldDistance;
+                        bool Brake = NewDistance < MinDistanceBrake && NewDistance > MinDistanceEmergencyBrake && Decreasing;
+                        bool EmergencyBrake = NewDistance < MinDistanceEmergencyBrake && Decreasing;
+
+                        //------------------------------------------------
+                        //Check if the cars are driving towards eachother
+                        //------------------------------------------------
+                        //Car1
+                        //------------------------------------------------
+                        dX = NextPosCar1.X - Car2.Position.X;
+                        dY = NextPosCar1.Y - Car2.Position.Y;
+                        double Distance_Car1NewPos_Car2OldPos = Math.Sqrt(Math.Pow(dX, 2) + Math.Pow(dY, 2));
+                        bool Car1DrivesTowardsCar2 = Distance_Car1NewPos_Car2OldPos < OldDistance;
+                        //------------------------------------------------
+                        //Car2
+                        //------------------------------------------------
+                        dX = NextPosCar2.X - Car1.Position.X;
+                        dY = NextPosCar2.Y - Car1.Position.Y;
+                        double Distance_Car2NewPos_Car1OldPos = Math.Sqrt(Math.Pow(dX, 2) + Math.Pow(dY, 2));
+                        bool Car2DrivesTowardsCar1 = Distance_Car2NewPos_Car1OldPos < OldDistance;
+
+                        if (Brake)
                         {
-                            if (!CarsBrake.Contains(Car1))
+                            if (!CarsBrake.Contains(Car1) && Car1DrivesTowardsCar2)
                             {
                                 CarsBrake.Add(Car1);
                             }
-                            if (!CarsBrake.Contains(Car2))
+                            if (!CarsBrake.Contains(Car2) && Car2DrivesTowardsCar1)
                             {
                                 CarsBrake.Add(Car2);
                             }
                         }
-                        else if(Distance < MinDistanceEmergencyBrake && Distance < OldDistance)
+                        else if(EmergencyBrake)
                         {
-                            if (!CarsEmergencyBrake.Contains(Car1))
+                            if (!CarsEmergencyBrake.Contains(Car1) && Car1DrivesTowardsCar2)
                             {
                                 CarsEmergencyBrake.Add(Car1);
                             }
-                            if (!CarsEmergencyBrake.Contains(Car2))
+                            if (!CarsEmergencyBrake.Contains(Car2) && Car2DrivesTowardsCar1)
                             {
                                 CarsEmergencyBrake.Add(Car2);
                             }
@@ -412,9 +476,9 @@ namespace PTT2CarGps
             {
                 if (!c.IsLost)
                 {
-<<<<<<< HEAD
                     BrakeWarning bw = new BrakeWarning(DateTime.Now, c.Position);
                     c.SendMessage(bw);
+                    //locClient.SendWarning((byte)c.SignatureId);
                 }
             }
             foreach (Car c in CarsEmergencyBrake)
@@ -423,9 +487,7 @@ namespace PTT2CarGps
                 {
                     EmergencyBrakeWarning bw = new EmergencyBrakeWarning(DateTime.Now, c.Position);
                     c.SendMessage(bw);
-=======
-                    locClient.SendWarning((byte)c.SignatureId);
->>>>>>> 5f8619b0ba50824be786313f030443b4bca5d7b3
+                    //locClient.SendEmergencyWarning((byte)c.SignatureId);
                 }
             }
         }

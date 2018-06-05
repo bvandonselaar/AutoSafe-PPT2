@@ -48,7 +48,20 @@ namespace PTT2CarGps
         }
         public void Draw(Graphics Canvas, Color Color)
         {
-            if(Path.GetPositions.Count > 0 && !(Path.Position.X == 0 && Path.Position.Y == 0))
+            List<Message> OldMessages = new List<Message>();
+            foreach (Message m in Messages)
+            {
+                if (DateTime.Now.Subtract(m.TimeSend).Seconds < 5)
+                {
+                    m.Draw(Canvas, Color);
+                }
+                else OldMessages.Add(m);
+            }
+            foreach (Message m in OldMessages)
+            {
+                Messages.Remove(m);
+            }
+            if (Path.GetPositions.Count > 0 && !(Path.Position.X == 0 && Path.Position.Y == 0))
             {
                 Pen pen = new Pen(Color);
                 Point pos = Path.Position;
@@ -61,19 +74,6 @@ namespace PTT2CarGps
                 Path.Draw(Canvas, Color);
                 if (!IsLost) Canvas.DrawString("ID:" + SignatureId, System.Windows.Forms.Control.DefaultFont, new SolidBrush(Color.White), pos);
                 else Canvas.DrawString("ID:" + SignatureId + "", System.Windows.Forms.Control.DefaultFont, new SolidBrush(Color.Gray), pos);
-            }
-            List<Message> OldMessages = new List<Message>();
-            foreach(Message m in Messages)
-            {
-                if (DateTime.Now.Subtract(m.TimeSend).Seconds < 5)
-                {
-                    m.Draw(Canvas, Color);
-                }
-                else OldMessages.Add(m);
-            }
-            foreach(Message m in OldMessages)
-            {
-                Messages.Remove(m);
             }
         }
 
@@ -93,7 +93,7 @@ namespace PTT2CarGps
             {
                 foreach (Message m in Messages)
                 {
-                    if (DateTime.Now.Subtract(m.TimeSend).Seconds < 3)
+                    if (DateTime.Now.Subtract(m.TimeSend).Seconds < 1)
                     {
                         return;
                     }
