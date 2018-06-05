@@ -55,7 +55,6 @@
     <Compile Include="Packet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Unpack.cs" />
     <EmbeddedResource Include="connectForm.resx">
       <DependentUpon>connectForm.cs</DependentUpon>
     </EmbeddedResource>

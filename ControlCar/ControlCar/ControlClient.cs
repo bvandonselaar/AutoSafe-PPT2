@@ -40,10 +40,8 @@ namespace ControlCar
         /// <param name="commandNumber"> Choose forward/backward/left/right/brake </param>
         /// <param name="speed"> speed in byte </param>
         /// <returns> Succes condition </returns>
-        public int SendSpeed(int commandNumber, byte speed)
+        public int SendSpeed(int commandNumber, byte id, byte speed)
         {
-            
-            
             byte catCmd = Convert.ToByte(224 + commandNumber);
             try
             {
@@ -51,13 +49,13 @@ namespace ControlCar
                 {
                     byte[] data = { speed };
                     Packet p = new Packet();
-                    byte[] message = p.Serialize(catCmd, data);
+                    byte[] message = p.Serialize(catCmd, id, data);
                     tcpStream.Write(message, 0, message.Length);
                 }
                 else
                 {
                     Packet p = new Packet();
-                    byte[] message = p.Serialize(catCmd, null);
+                    byte[] message = p.Serialize(catCmd, id, null);
                     tcpStream.Write(message, 0, message.Length);
                 }
                 currentSpeed = speed;
