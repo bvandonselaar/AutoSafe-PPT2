@@ -79,6 +79,7 @@ namespace PTT2CarGps
 
         public void SendMessage(Message message)
         {
+            if (message == null) throw new ArgumentNullException();
             if(message is EmergencyBrakeWarning)
             {
                 foreach(Message m in Messages)
