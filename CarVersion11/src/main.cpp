@@ -9,13 +9,6 @@
 #include <receive.h>
 
 uint8_t Speed = 255;
-float distance1 = 0;  //distance ultrasone sensor 1
-float distance2 =0;   //distance ultrasone sensor 2
-
-uint8_t Ivalue1 = 0;
-uint8_t Ivalue2 = 0;
-uint8_t Ivalue3 = 0;
-uint8_t Ivalue4 = 0;
 
 int newMessage = 0;
 uint8_t data[50];
@@ -73,4 +66,5 @@ void loop()
     {
         
     }
+    
 }
