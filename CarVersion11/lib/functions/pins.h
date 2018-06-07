@@ -20,12 +20,15 @@
 #define U1_trigPin  2   //ultrasone sensor 1
 #define U1_echoPin  4
 
-#define U2_trigPin  12  //ultrasone sensor 2
-#define U2_echoPin  13
+/*#define U2_trigPin  12  //ultrasone sensor 2
+#define U2_echoPin  13*/
 
 #define Infrarood1  0   //infrarode sensoren
 #define Infrarood2  1
 #define Infrarood3  2
 #define Infrarood4  3
+
+#define ButtonPin 12    //SOS knop
+#define led 13 //warning led
 
 #endif

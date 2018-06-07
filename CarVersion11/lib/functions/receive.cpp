@@ -4,12 +4,12 @@
  * Copyright (c) 2018, AutoSafe, Inc.
  */
 
-#include "receive.h"
+#include <receive.h>
 #include <stdio.h>
 #include <Wire.h>
-#include "protocol.h"
-#include "send.h"
-#include "category.h"
+#include <protocol.h>
+#include <send.h>
+#include <category.h>
 
 int checkMagic(uint16_t* magic){
   if(magic == NULL){
