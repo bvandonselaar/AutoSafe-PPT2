@@ -55,6 +55,7 @@ namespace PTT2CarGps
         }
         public Trail(int maxPositions)
         {
+            if (maxPositions < 0) throw new TrailCountNegativeException();
             Positions = new List<LocationTime>();
             MaxPositions = maxPositions;
         }

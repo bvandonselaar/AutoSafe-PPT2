@@ -16,7 +16,7 @@
  * @param location  Struct with location where location has to be saved, if says in Command
  * @param motorPins Pins for controling the motors
  */
-void SelectCategory(struct packet* packet, uint8_t* Speed);
+void SelectCategory(struct packet* packet, uint8_t* Speed, uint8_t* state);
 
 /**
  * Category is 0xE0 so Control. Selects Command and execute

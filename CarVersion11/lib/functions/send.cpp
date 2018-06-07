@@ -4,10 +4,10 @@
  * Copyright (c) 2018, AutoSafe, Inc.
  */
 
-#include "send.h"
+#include <send.h>
 #include <Arduino.h>
 #include <Wire.h>
-#include "protocol.h"
+#include <protocol.h>
 
 int fletcher16(uint16_t* checksum, uint8_t* data, uint8_t length){
   if(checksum == NULL || data == NULL){
@@ -31,22 +31,19 @@ int fletcher16(uint16_t* checksum, uint8_t* data, uint8_t length){
   return 0;
 }
 
-int breakWarning(uint16_t *identifier){
+int breakWarning(){
   if(identifier == NULL){
     return -1;
   }
   struct packet pac;
   pac.magic = 0x0EE0;
-  pac.length = 0x08;
-  pac.category = 0x06;
+  pac.length = 0x06;
+  pac.category = 0x02;
   pac.command = 0x08;
-  pac.identifier = *identifier;
   pac.payload = NULL;
   uint16_t checksum;
-  uint8_t id1 = *identifier >> 8;
-  uint8_t id2 = *identifier & 0xFF;
-  uint8_t data[] = {0x0E, 0xE0, 0x08, 0xC8, id1, id2};
-  int check = fletcher16(&checksum, data, 6);
+  uint8_t data[] = {0x0E, 0xE0, 0x06, 0x28};
+  int check = fletcher16(&checksum, data, 4);
   if(check == -1){
     return -1;
   }
@@ -62,22 +59,19 @@ int breakWarning(uint16_t *identifier){
   return 0;
 }
 
-int emergencyBreakWarning(uint16_t* identifier){
+int emergencyBreakWarning(){
   if(identifier == NULL){
     return -1;
   }
   struct packet pac;
   pac.magic = 0x0EE0;
-  pac.length = 0x08;
-  pac.category = 0x06;
+  pac.length = 0x06;
+  pac.category = 0x02;
   pac.command = 0x09;
-  pac.identifier = *identifier;
   pac.payload = NULL;
   uint16_t checksum;
-  uint8_t id1 = *identifier >> 8;
-  uint8_t id2 = *identifier & 0xFF;
-  uint8_t data[] = {0x0E, 0xE0, 0x08, 0xC9, id1, id2};
-  int check = fletcher16(&checksum, data, 6);
+  uint8_t data[] = {0x0E, 0xE0, 0x06, 0x29};
+  int check = fletcher16(&checksum, data, 4);
   if(check == -1){
     return -1;
   }
@@ -93,22 +87,19 @@ int emergencyBreakWarning(uint16_t* identifier){
   return 0;
 }
 
-int SOSmessage(uint16_t* identifier){
+int SOSmessage(){
   if(identifier == NULL){
     return -1;
   }
   struct packet pac;
   pac.magic = 0x0EE0;
-  pac.length = 0x08;
-  pac.category = 0x06;
+  pac.length = 0x06;
+  pac.category = 0x02;
   pac.command = 0x0A;
-  pac.identifier = *identifier;
   pac.payload = NULL;
   uint16_t checksum;
-  uint8_t id1 = *identifier >> 8;
-  uint8_t id2 = *identifier & 0xFF;
-  uint8_t data[6] = {0x0E, 0xE0, 0x08, 0xCA, id1, id2};
-  int check = fletcher16(&checksum, data, 6);
+  uint8_t data[6] = {0x0E, 0xE0, 0x06, 0x2A};
+  int check = fletcher16(&checksum, data, 4);
   if(check == -1){
     return -1;
   }

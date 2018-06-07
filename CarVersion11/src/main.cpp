@@ -9,6 +9,8 @@
 #include <receive.h>
 
 uint8_t Speed = 255;
+uint8_t State = 0;      //0 state is drive, 1 state is car(drive can't control the car)
+unsigned long currentMillis = 0;
 
 int newMessage = 0;
 uint8_t data[50];
@@ -47,13 +49,17 @@ void setup()
   pinMode(U1_trigPin, OUTPUT); //ultasone sensor 1
   pinMode(U1_echoPin, INPUT);
 
-  pinMode(U2_trigPin, OUTPUT);  //ultrasone sensor 2
-  pinMode(U2_echoPin, INPUT);
+  /*pinMode(U2_trigPin, OUTPUT);  //ultrasone sensor 2
+  pinMode(U2_echoPin, INPUT);*/
 
-  pinMode(Infrarood1, INPUT);
+  pinMode(Infrarood1, INPUT);   //infrarode sensoren
   pinMode(Infrarood2, INPUT);
   pinMode(Infrarood3, INPUT);
   pinMode(Infrarood4, INPUT);
+
+  pinMode(ButtonPin, INPUT);    //SOS knop
+  pinMode(led, OUTPUT);         //warning led
+  digitalWrite(led, LOW);
 
   Wire.begin(42);
   Wire.onReceive(receiveEvent);
@@ -62,9 +68,26 @@ void setup()
 
 void loop()
 {
-    if(newMessage == 1)
-    {
-        
+  if(newMessage == 1)
+  {
+    if(readMessage(data, &size, &Speed, &state) == 1){
+        Serial.println("Message received and done");
     }
-    
+    newMessage = 0;
+  }
+  if(State == 1){
+    if(millis() - currentMillis >  10000){
+      ReadAllSensors(&Speed, &state);
+      currentMillis = millis();
+    }
+  }
+  else if (State == 0){
+    ReadAllSensors(&Speed, &state);
+    if(digitalRead(ButtonPin) == HIGH){
+      if(SOSmessage() == 1){
+        Serial.println("SOS message is send");
+      }
+    }
+    currentMillis = millis();
+  }
 }

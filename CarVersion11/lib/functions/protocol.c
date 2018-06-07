@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "protocol.h"
+#include <protocol.h>
 
 int packet_serialize(struct packet* packet, uint8_t* data, size_t* size)
 {
@@ -30,10 +30,6 @@ int packet_serialize(struct packet* packet, uint8_t* data, size_t* size)
 
     // Command
     data[i++] = (packet->category << 5) | packet->command;
-
-    // Identifier
-    data[i++] = packet->identifier >> 8;
-    data[i++] = packet->identifier & 0xFF;
 
     // Payload
     if (packet->length > 0) {
@@ -72,9 +68,6 @@ int packet_deserialize(struct packet* packet, const uint8_t* data, const size_t 
     // Category + command
     packet->category = data[i] >> 5;
     packet->command = data[i++] & 0b00011111;
-
-    // Identifier
-    packet->identifier = data[i+1] << 8 | data[i+1];
 
     // Payload
     packet->payload = malloc(packet->length - PACKET_FIXED);
