@@ -19,6 +19,14 @@ namespace CarGpsTests
             Assert.AreEqual(maxPositions, trail.MaxPositions);
         }
         [TestMethod]
+        [ExpectedException(typeof(TrailCountNegativeException))]
+        public void TestTrailConstructorNegativeCount()
+        {
+            int maxPositions = -10;
+
+            Trail trail = new Trail(maxPositions);
+        }
+        [TestMethod]
         public void TestPositionAdding()
         {
             Trail trail = new Trail();

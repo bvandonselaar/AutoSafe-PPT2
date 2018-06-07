@@ -74,6 +74,15 @@ namespace CarGpsTests
             Assert.AreEqual(emergencyBrakeWarning1, TestCar.GetMessages[1]);
             Assert.AreEqual(2, TestCar.GetMessages.Count);
         }
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestCarSendMessageNullException()
+        {
+            int SignatureId = 5;
+            Car TestCar = new Car(SignatureId);
+
+            TestCar.SendMessage(null);
+        }
 
         [TestMethod]
         public void TestCarIsLost()
