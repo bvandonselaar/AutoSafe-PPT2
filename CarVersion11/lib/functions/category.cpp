@@ -13,8 +13,9 @@
 void CatControl(struct packet* packet, uint8_t* Speed){
   if(packet != NULL && Speed != NULL){
   if(packet->payload != NULL){
-    uint8_t speed[2] = packet->payload;
-    *Speed = speed[0];
+    uint8_t* payload_pp = packet->payload;
+    uint8_t speed= *payload_pp;
+    *Speed = speed;
   }
     switch(packet->command){
       //emergency break

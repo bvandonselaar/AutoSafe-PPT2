@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <Arduino.h>
 #include <Wire.h>
-#include "directions.h"
-#include "sensors.h"
-#include "category.h"
-#include "protocol.h"
-#include "pins.h"
-#include "receive.h"
+#include <directions.h>
+#include <sensors.h>
+#include <category.h>
+#include <protocol.h>
+#include <pins.h>
+#include <receive.h>
 
 uint8_t Speed = 255;
 float distance1 = 0;  //distance ultrasone sensor 1
@@ -34,6 +34,11 @@ void receiveEvent(int howMany){
   }
 }
 
+void writeEvent()
+{
+
+}
+
 void setup()
 {
   Serial.begin(9600);
@@ -59,10 +64,13 @@ void setup()
 
   Wire.begin(42);
   Wire.onReceive(receiveEvent);
-  //Wire.onRequest(writeEvent);
+  Wire.onRequest(writeEvent);
 }
 
 void loop()
 {
-  
+    if(newMessage == 1)
+    {
+        
+    }
 }
