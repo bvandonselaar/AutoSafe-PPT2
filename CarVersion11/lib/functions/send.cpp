@@ -32,9 +32,7 @@ int fletcher16(uint16_t* checksum, uint8_t* data, uint8_t length){
 }
 
 int breakWarning(){
-  if(identifier == NULL){
-    return -1;
-  }
+
   struct packet pac;
   pac.magic = 0x0EE0;
   pac.length = 0x06;
@@ -60,9 +58,7 @@ int breakWarning(){
 }
 
 int emergencyBreakWarning(){
-  if(identifier == NULL){
-    return -1;
-  }
+
   struct packet pac;
   pac.magic = 0x0EE0;
   pac.length = 0x06;
@@ -88,9 +84,7 @@ int emergencyBreakWarning(){
 }
 
 int SOSmessage(){
-  if(identifier == NULL){
-    return -1;
-  }
+
   struct packet pac;
   pac.magic = 0x0EE0;
   pac.length = 0x06;

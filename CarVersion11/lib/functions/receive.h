@@ -13,6 +13,6 @@ int checkMagic(uint16_t* magic);
 
 int checkChecksum(uint16_t* packetChecksum, uint16_t* expectedChecksum, uint8_t* data, uint8_t length);
 
-int readMessage(uint8_t* data, size_t* size);
+int readMessage(uint8_t* data, size_t* size, uint8_t* Speed, uint8_t* state);
 
 #endif

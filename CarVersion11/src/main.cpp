@@ -1,15 +1,15 @@
-#include <stdio.h>
 #include <Arduino.h>
+#include <receive.h>
 #include <Wire.h>
 #include <directions.h>
 #include <sensors.h>
 #include <category.h>
 #include <protocol.h>
 #include <pins.h>
-#include <receive.h>
+#include <send.h>
 
 uint8_t Speed = 255;
-uint8_t State = 0;      //0 state is drive, 1 state is car(drive can't control the car)
+uint8_t state = 0;      //0 state is drive, 1 state is car(drive can't control the car)
 unsigned long currentMillis = 0;
 
 int newMessage = 0;
@@ -70,21 +70,21 @@ void loop()
 {
   if(newMessage == 1)
   {
-    if(readMessage(data, &size, &Speed, &state) == 1){
+    if(readMessage(data, &size, &Speed, &state) == 0){
         Serial.println("Message received and done");
     }
     newMessage = 0;
   }
-  if(State == 1){
+  if(state == 1){
     if(millis() - currentMillis >  10000){
       ReadAllSensors(&Speed, &state);
       currentMillis = millis();
     }
   }
-  else if (State == 0){
+  else if (state == 0){
     ReadAllSensors(&Speed, &state);
     if(digitalRead(ButtonPin) == HIGH){
-      if(SOSmessage() == 1){
+      if(SOSmessage() == 0){
         Serial.println("SOS message is send");
       }
     }

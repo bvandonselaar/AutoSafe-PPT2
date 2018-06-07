@@ -8,6 +8,7 @@
 #include <Arduino.h>
 #include <protocol.h>
 #include <directions.h>
+#include <pins.h>
 
 //0xE0
 void CatControl(struct packet* packet, uint8_t* Speed){
@@ -118,7 +119,7 @@ void SelectCategory(struct packet* packet, uint8_t* Speed, uint8_t* state){
       //category is warning
       case 0x02:
         CatWarning(packet, Speed);
-        &state = 1;
+        *state = 1;
         digitalWrite(led, HIGH);
       break;
       /*//category is location

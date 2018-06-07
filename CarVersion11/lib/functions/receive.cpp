@@ -30,17 +30,15 @@ int checkChecksum(uint16_t* packetChecksum, uint8_t* data, uint8_t length){
       return 0;
     }
   }
-  else{
-    return -1;
-  }
+  return -1;
 }
 
-int readMessage(uint8_t* data, size_t size, uint8_t* Speed){
+int readMessage(uint8_t* data, size_t* size, uint8_t* Speed, uint8_t* state){
   if(data == NULL ||  Speed == NULL){
     return -1;
   }
   struct packet pac = {};
-  if(packet_deserialize(&pac, data, size) == -1){
+  if(packet_deserialize(&pac, data, *size) == -1){
     return -1;
   }
   if(checkMagic(&pac.magic) == -1){
@@ -50,6 +48,6 @@ int readMessage(uint8_t* data, size_t size, uint8_t* Speed){
   if(checkChecksum(&pac.checksum, data, length) == -1){
     return -1;
   }
-  SelectCategory(&pac, Speed);
+  SelectCategory(&pac, Speed, state);
   return 0;
 }

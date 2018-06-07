@@ -40,49 +40,46 @@ void ReadInfrarodeSensor(uint8_t Infrarood, uint8_t* value){
 
 void ReadAllSensors(uint8_t* speed, uint8_t* state){
     float distanceU1 = 0;
-    float distanceU2 = 0;
-    float infraValue1 = 0;
-    float infraValue2 = 0;
-    float infraValue3 = 0;
-    float infraValue4 = 0;
+    uint8_t infraValue1 = 0;
+    uint8_t infraValue2 = 0;
+    uint8_t infraValue3 = 0;
+    uint8_t infraValue4 = 0;
     *state = 0;
     Serial.println("Ultrasone sensor 1: ");
-    GetDistance(U1_trigPin, U1_echoPin, distanceU1);
-    Serial.println("Ultrasone sensor 2: ");
-    GetDistance(U2_trigPin, U2_echoPin, distanceU2);
+    GetDistance(U1_trigPin, U1_echoPin, &distanceU1);
     Serial.println("Infrarode sensor 1: ");
-    ReadInfrarodeSensor(Infrarood1, infraValue1);
+    ReadInfrarodeSensor(Infrarood1, &infraValue1);
     Serial.println("Infrarode sensor 2: ");
-    ReadInfrarodeSensor(Infrarood2, infraValue2);
+    ReadInfrarodeSensor(Infrarood2, &infraValue2);
     Serial.println("Infrarode sensor 3: ");
-    ReadInfrarodeSensor(Infrarood3, infraValue3);
+    ReadInfrarodeSensor(Infrarood3, &infraValue3);
     Serial.println("Infrarode sensor 4: ");
-    ReadInfrarodeSensor(Infrarood4, infraValue4);
+    ReadInfrarodeSensor(Infrarood4, &infraValue4);
 
-    if(distanceU1 < 5 || distanceU2 < 5)
+    if(distanceU1 < 5.00)
     {
         *state = 1;
         digitalWrite(led, HIGH);
         Stop();
     }
-    if(distanceU1 < 10 || distanceU2 < 5)
+    if(distanceU1 < 10.00)
     {
         *state = 1;
         digitalWrite(led, HIGH);
-        Break(&speed);
+        Break(speed);
     }
 
     if(infraValue1 < 5 || infraValue2 < 5 || infraValue3 < 5 || infraValue4 < 5)
     {
         *state = 1;
         digitalWrite(led, HIGH);
-        Stop()
+        Stop();
     }
     if(infraValue1 < 10 || infraValue2 < 10 || infraValue3 < 10 || infraValue4 < 10)
     {
         *state = 1;
         digitalWrite(led, HIGH);
-        Break(&speed);
+        Break(speed);
     }
 
     digitalWrite(led, LOW);
