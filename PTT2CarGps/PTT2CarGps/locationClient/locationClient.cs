@@ -36,21 +36,21 @@ namespace PTT2CarGps.locationClient
             byte[] payload = { xHigh, xLow, yHigh, yLow };
 
             Packet p = new Packet();
-            byte[] message = p.Serialize(0xA2, id, payload);
+            byte[] message = p.Serialize(0xA2, payload);
             tcpStream.Write(message, 0, message.Length);
         }
 
         public void SendWarning(byte id)
         {
             Packet p = new Packet();
-            byte[] message = p.Serialize(0xC8, id, null);
+            byte[] message = p.Serialize(0xC8, null);
             tcpStream.Write(message, 0, message.Length);
         }
 
         public void SendEmergencyWarning(byte id)
         {
             Packet p = new Packet();
-            byte[] message = p.Serialize(0xC9, id, null);
+            byte[] message = p.Serialize(0xC9, null);
             tcpStream.Write(message, 0, message.Length);
         }
 

@@ -20,9 +20,6 @@ namespace PTT2CarGps
      * Cmd - 5 bits
      * The number identifying the command within the category (see Commands). A receiver must ignore a packet if it doesn’t recognize the command.
      * 
-     * Identifier - 16 bits
-     * Identifier of the intended recipient of the packet.
-     * 
      * Payload - n × 16 bits
      * Arbitrary number of data bytes carried by the packet. This must be interpreted depending on the command.
      * 
@@ -35,8 +32,6 @@ namespace PTT2CarGps
         public byte Magic2 { get { return 0xE0; } }
         public byte[] newMessage { get; private set; }
         public byte Length { get; private set; }
-        public byte Identifier1 { get; private set; }
-        public byte Identifier2 { get; private set; }
         public UInt16 Checksum { get; private set; }
 
         byte bitmask = 0xFF;
@@ -51,16 +46,16 @@ namespace PTT2CarGps
         /// <param name="Payload">Payload - n × 16 bit, Arbitrary number of data bytes carried by the packet.This must be interpreted depending on the command. </param>
         /// <param name="Checksum">Checksum - 16 bits, Checksum of the complete packet computed using the Fletcher-16 algorithm.This is used to detect if the packet was corrupted.</param>
         /// <returns>het gehele bericht</returns>
-        public byte[] Serialize(byte Command, UInt16 Identifier, byte[] Payload)
+        public byte[] Serialize(byte Command, byte[] Payload)
         {
             //De lengte van het bericht is 6 wanneer hij geen payload heeft, anders 6 + de lengte van de payload
             if (Payload == null)
             {
-                Length = 8;
+                Length = 6;
             }
             else
             {
-                Length = (byte)(8 + Payload.Length);
+                Length = (byte)(6 + Payload.Length);
             }
 
             //maakt message-array aan
@@ -76,18 +71,12 @@ namespace PTT2CarGps
             newMessage[2] = Length;
             newMessage[3] = Command;
 
-            Identifier1 = (byte)((Identifier >> 8) & 0xFF);
-            Identifier2 = (byte)(Identifier & 0XFF);
-
-            newMessage[4] = Identifier1;
-            newMessage[5] = Identifier2;
-
             //Als de payload niet null is, dan splitst hij hier de Payload in losse bytes en zet het in het nieuwe bericht
             if (Payload != null)
             {
                 for (int i = 0; i < Payload.Length; i++)
                 {
-                    newMessage[i + 6] = (byte)(bitmask & (Payload[i]));
+                    newMessage[i + 4] = (byte)(bitmask & (Payload[i]));
                 }
             }
             //Doet controleren of de waarden kloppen
