@@ -6,8 +6,9 @@
 
 #include <stdio.h>
 #include <Arduino.h>
-#include "motoren.h"
-#include "pins.h"
+#include <motoren.h>
+#include <pins.h>
+#include <send.h>
 
 void Forward(uint8_t* s){
 if(s != NULL){
@@ -49,6 +50,9 @@ void Stop(){
   digitalWrite(M2_Dir2, LOW);
   digitalWrite(M1_Dir1, LOW);
   digitalWrite(M1_Dir2, LOW);
+  if(emergencyBreakWarning() == 0){
+    Serial.println("emergency break warning sended");
+  }
 }
 
 void Break(uint8_t* s){
@@ -58,5 +62,8 @@ void Break(uint8_t* s){
       ChangeSpeed(s);
     }
     Stop();
+  }
+  if(breakWarning() == 0){
+    Serial.println("Break warning sended");
   }
 }

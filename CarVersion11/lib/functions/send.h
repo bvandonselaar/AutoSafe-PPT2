@@ -11,10 +11,10 @@
 
 int fletcher16(uint16_t* checksum, uint8_t* data, uint8_t length);
 
-int breakWarning(uint16_t* identifier);
+int breakWarning();
 
-int emergencyBreakWarning(uint16_t* identifier);
+int emergencyBreakWarning();
 
-int SOSmessage(uint16_t* identifier);
+int SOSmessage();
 
 #endif

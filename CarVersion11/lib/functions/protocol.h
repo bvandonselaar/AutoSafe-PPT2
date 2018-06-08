@@ -33,7 +33,6 @@ struct packet
     uint16_t length:8;
     uint16_t category:3;
     uint16_t command:5;
-    uint16_t identifier;
 
     uint8_t* payload;
 

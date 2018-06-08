@@ -1,21 +1,16 @@
-#include <stdio.h>
 #include <Arduino.h>
+#include <receive.h>
 #include <Wire.h>
 #include <directions.h>
 #include <sensors.h>
 #include <category.h>
 #include <protocol.h>
 #include <pins.h>
-#include <receive.h>
+#include <send.h>
 
 uint8_t Speed = 255;
-float distance1 = 0;  //distance ultrasone sensor 1
-float distance2 =0;   //distance ultrasone sensor 2
-
-uint8_t Ivalue1 = 0;
-uint8_t Ivalue2 = 0;
-uint8_t Ivalue3 = 0;
-uint8_t Ivalue4 = 0;
+uint8_t state = 0;      //0 state is drive, 1 state is car(drive can't control the car)
+unsigned long currentMillis = 0;
 
 int newMessage = 0;
 uint8_t data[50];
@@ -54,13 +49,17 @@ void setup()
   pinMode(U1_trigPin, OUTPUT); //ultasone sensor 1
   pinMode(U1_echoPin, INPUT);
 
-  pinMode(U2_trigPin, OUTPUT);  //ultrasone sensor 2
-  pinMode(U2_echoPin, INPUT);
+  /*pinMode(U2_trigPin, OUTPUT);  //ultrasone sensor 2
+  pinMode(U2_echoPin, INPUT);*/
 
-  pinMode(Infrarood1, INPUT);
+  pinMode(Infrarood1, INPUT);   //infrarode sensoren
   pinMode(Infrarood2, INPUT);
   pinMode(Infrarood3, INPUT);
   pinMode(Infrarood4, INPUT);
+
+  pinMode(ButtonPin, INPUT);    //SOS knop
+  pinMode(led, OUTPUT);         //warning led
+  digitalWrite(led, LOW);
 
   Wire.begin(42);
   Wire.onReceive(receiveEvent);
@@ -69,8 +68,26 @@ void setup()
 
 void loop()
 {
-    if(newMessage == 1)
-    {
-        
+  if(newMessage == 1)
+  {
+    if(readMessage(data, &size, &Speed, &state) == 0){
+        Serial.println("Message received and done");
     }
+    newMessage = 0;
+  }
+  if(state == 1){
+    if(millis() - currentMillis >  10000){
+      ReadAllSensors(&Speed, &state);
+      currentMillis = millis();
+    }
+  }
+  else if (state == 0){
+    ReadAllSensors(&Speed, &state);
+    if(digitalRead(ButtonPin) == HIGH){
+      if(SOSmessage() == 0){
+        Serial.println("SOS message is send");
+      }
+    }
+    currentMillis = millis();
+  }
 }

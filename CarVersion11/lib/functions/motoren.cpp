@@ -6,7 +6,7 @@
 
 #include <stdio.h>
 #include <Arduino.h>
-#include "pins.h"
+#include <pins.h>
 
 void MotorLeftForward(uint8_t* s){
 if(s != NULL){

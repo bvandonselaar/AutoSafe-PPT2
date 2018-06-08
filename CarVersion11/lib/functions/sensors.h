@@ -25,7 +25,7 @@ void GetDistance(uint8_t* trigPin, uint8_t* echoPin, float* distance);
  */
 void ReadInfrarodeSensor(uint8_t* Infrarood, uint8_t* value);
 
-void ReadAllSensors(float* distance1, float* distance2, uint8_t* InfraValue1,uint8_t* InfraValue2,uint8_t* InfraValue3,uint8_t* InfraValue4);
+void ReadAllSensors(uint8_t* speed, uint8_t* state);
 
 
 #endif
