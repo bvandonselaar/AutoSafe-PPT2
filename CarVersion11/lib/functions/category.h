@@ -13,8 +13,8 @@
  * Selects category and sends through to command
  *
  * @param packet    Packet with data that's come in
- * @param location  Struct with location where location has to be saved, if says in Command
- * @param motorPins Pins for controling the motors
+ * @param Speed     speed of the car
+ * @param state     Who is in control of the car
  */
 void SelectCategory(struct packet* packet, uint8_t* Speed, uint8_t* state);
 
@@ -22,7 +22,7 @@ void SelectCategory(struct packet* packet, uint8_t* Speed, uint8_t* state);
  * Category is 0xE0 so Control. Selects Command and execute
  *
  * @param packet    Packet with data that's come in
- * @param motorPins Pins for controling the motors
+ * @param Speed     speed of the car
  */
 void CatControl(struct packet* packet, uint8_t* Speed);
 
@@ -30,8 +30,7 @@ void CatControl(struct packet* packet, uint8_t* Speed);
  * Category is 0xC0 so Warning. Selects Command and execute
  *
  * @param packet    Packet with data that's come in
- * @param location  Struct with location where location has to be saved if is in Command
- * @param motorPins Pins for controling the motors
+ * @param Speed     speed of the car
  */
 void CatWarning(struct packet* packet, uint8_t* Speed);
 
@@ -39,7 +38,7 @@ void CatWarning(struct packet* packet, uint8_t* Speed);
  * Category is 0xA0 so Location. Selects Command and execute
  *
  * @param packet    Packet with data that's come in
- * @param location  Struct with location where is has to be saved
+ * @param Speed     speed of the car
 
 void CatLocation(struct packet* packet,struct location* previousLocation, struct location* location);
 */

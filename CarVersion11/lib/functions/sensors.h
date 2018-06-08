@@ -12,7 +12,8 @@
 /**
  * Methode for reading distance from ultrasone sensor
  *
- * @param ultrasonePin  Pins for reading ultrasone sensor
+ * @param trigPin       Pins for reading ultrasone sensor
+ * @param echoPin       Pins for reading ultrasone sensor
  * @param distance      Variable where the distance need to be saved
  */
 void GetDistance(uint8_t* trigPin, uint8_t* echoPin, float* distance);
@@ -25,6 +26,12 @@ void GetDistance(uint8_t* trigPin, uint8_t* echoPin, float* distance);
  */
 void ReadInfrarodeSensor(uint8_t* Infrarood, uint8_t* value);
 
+/**
+ * Methode for reading all sensors
+ *
+ * @param Speed     speed of the car
+ * @param state     Who is in control of the car
+ */
 void ReadAllSensors(uint8_t* speed, uint8_t* state);
 
 

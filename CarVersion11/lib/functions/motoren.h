@@ -8,28 +8,28 @@
 /**
  * Methode for letting the left motor spinning forward
  *
- * @param motorPins Pins for controling the motors
+ * @param s      speed of the car
  */
 void MotorLeftForward(uint8_t* s);
 
 /**
  * Methode for letting the right motor spinning forward
  *
- * @param motorPins Pins for controling the motors
+ * @param s      speed of the car
  */
 void MotorRightForward(uint8_t* s);
 
 /**
  * Methode for letting the left motor spinning backward
  *
- * @param motorPins Pins for controling the motors
+ * @param s      speed of the car
  */
 void MotorLeftBackward(uint8_t* s);
 
 /**
  * Methode for letting the right motor spinning backward
  *
- * @param motorPins Pins for controling the motors
+ * @param s      speed of the car
  */
 void MotorRightBackward(uint8_t* s);
 
